@@ -166,7 +166,7 @@
     z-index: 10000;
     padding-left: 20px;
     padding-right: 20px;
-    box-shadow: 0 0 10px 0.1px white;
+    box-shadow: 0 0 10px 0px rgba(255, 255, 255, 0.625);
   }
   .landing_header_navbar .bi::before{
     font-weight: 900 !important;
@@ -179,4 +179,40 @@
     padding-bottom: 3px;
     transition: 0.3s;
     scale: 1.05;
+  }
+  #myCarousel{
+    background-image: url(../images/blob-haikei.svg);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: center center;
+  }
+  .crousal_heading{
+    margin-left: 6rem;
+    margin-top: 18vh;
+  }
+  .crousal_heading h1{
+    font-size: 4rem;
+  }
+  .crousal_heading span{
+    font-size: 4.5rem;
+    color: #712cf8;
+    font-weight: 700;
+    text-shadow: 0 0 10px #5a23c8;
+  }
+  .crousal_heading_btn{
+    background-color: #5a23c8;
+  }
+  .carousel-indicators [data-bs-target]{
+    height: 10px !important;
+    border-radius: 4px !important;
+    background-color: #5a23c8 !important;
+    border: 0 !important;
+  }
+  .carousel-control-next, .carousel-control-prev{
+    width: 8% !important;
+  }
+  .carousel-control-next .bi, .carousel-control-prev .bi{
+    font-size: 2rem;
+    color: #5a23c8;
+    font-weight: 800;
   }

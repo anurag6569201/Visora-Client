@@ -1,3 +1,6 @@
+import Crousal1 from '../../assets/landing/images/crousal1.svg'
+import Crousal2 from '../../assets/landing/images/crousal2.svg'
+import Crousal3 from '../../assets/landing/images/crousal3.svg'
 function LandingCrousal() {
     return (
         <div id="myCarousel" class="carousel slide mb-6" data-bs-ride="carousel">
@@ -8,42 +11,57 @@ function LandingCrousal() {
             </div>
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="var(--bs-secondary-color)" /></svg>
-                    <div class="container">
-                        <div class="carousel-caption text-start">
-                            <h1>Example headline.</h1>
-                            <p class="opacity-75">Some representative placeholder content for the first slide of the carousel.</p>
-                            <p><a class="btn btn-lg btn-primary" href="#">Sign up today</a></p>
+                    <div class="bd-placeholder-img row" width="100%" height="100%">
+                        <div className="col-md-6">
+                            <div className='crousal_heading'>
+                                <h1><span>RFQ</span> <br />Management</h1>
+                                <p>Streamlining procurement with seamless RFQ management—empowering organizations to easily request, compare, and manage quotations for efficient decision-making.</p>
+                                <p><a class="btn btn-lg crousal_heading_btn" href="#">Learn more</a></p>
+                            </div>
+                        </div>
+                        <div className="col-md-6 d-flex justify-content-center align-items-center" style={{height:'100vh'}}>
+                            <img src={Crousal1}  alt="" width="80%"/>
                         </div>
                     </div>
+                    
                 </div>
                 <div class="carousel-item">
-                    <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="var(--bs-secondary-color)" /></svg>
-                    <div class="container">
-                        <div class="carousel-caption">
-                            <h1>Another example headline.</h1>
-                            <p>Some representative placeholder content for the second slide of the carousel.</p>
-                            <p><a class="btn btn-lg btn-primary" href="#">Learn more</a></p>
+                    <div class="bd-placeholder-img row" width="100%" height="100%">
+                        <div className="col-md-6">
+                            <div className='crousal_heading'>
+                                <h1><span>Trust </span> <br />Excellence</h1>
+                                <p>Enhancing customer loyalty through seamless quality improvement—empowering organizations to build trust and foster lasting relationships.</p>
+                                <p><a class="btn btn-lg crousal_heading_btn" href="#">Learn more</a></p>
+                            </div>
+                        </div>
+                        <div className="col-md-6 d-flex justify-content-center align-items-center" style={{height:'100vh'}}>
+                            <img src={Crousal2}  alt="" width="80%"/>
                         </div>
                     </div>
+                    
                 </div>
                 <div class="carousel-item">
-                    <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="var(--bs-secondary-color)" /></svg>
-                    <div class="container">
-                        <div class="carousel-caption text-end">
-                            <h1>One more for good measure.</h1>
-                            <p>Some representative placeholder content for the third slide of this carousel.</p>
-                            <p><a class="btn btn-lg btn-primary" href="#">Browse gallery</a></p>
+                    <div class="bd-placeholder-img row" width="100%" height="100%">
+                        <div className="col-md-6">
+                            <div className='crousal_heading'>
+                                <h1><span>Vendor  </span> <br />Matching</h1>
+                                <p>Revolutionizing vendor selection with a Tinder-like matching system—empowering buyers to discover, compare, and connect with the perfect vendors effortlessly.</p>
+                                <p><a class="btn btn-lg crousal_heading_btn" href="#">Learn more</a></p>
+                            </div>
+                        </div>
+                        <div className="col-md-6 d-flex justify-content-center align-items-center" style={{height:'100vh'}}>
+                            <img src={Crousal3}  alt="" width="80%"/>
                         </div>
                     </div>
+                    
                 </div>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="" aria-hidden="true"><i class="bi bi-arrow-left-circle-fill"></i></span>
                 <span class="visually-hidden">Previous</span>
             </button>
             <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="" aria-hidden="true"><i class="bi bi-arrow-right-circle-fill"></i></span>
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
