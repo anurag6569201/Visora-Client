@@ -1,0 +1,58 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg" style="z-index: 10000;">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'home:home' %}" style="z-index: 10005;">
+        <img src="{% static 'assets/img/home/tfl_logo.webp' %}" alt="">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="width: 100%;justify-content: center;gap: 25px;">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="{% url 'home:home' %}#why_tfl">Why <span style="color: #E9661D;">TFL?</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="{% url 'home:home' %}#best_seller">Explore menu</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="{% url 'home:home' %}#today_menu">Today’s Menu</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="{% url 'home:home' %}#how_works">How It Works?</a>
+          </li>
+        </ul>
+        <form class="d-flex">
+          {% if user.is_authenticated %}
+          <div class="profile-badge">
+            <a href="{% url 'home:user_profile' %}" style="display: flex;align-items: center;justify-content: center;color: #E9661D;">
+              {% if user.socialaccount_set.exists %}
+                <!-- If the user is authenticated through Google -->
+                {% with user.socialaccount_set.first as social_account %}
+                  <img width="40px" height="40px" style="border-radius: 50%;margin-right: 10px;" src="{{ social_account.extra_data.picture }}" alt="Profile" class="profile-picture">
+                {% endwith %}
+              {% elif user.profile.picture %}
+                <!-- If the user uploaded their own picture -->
+                <img width="40px" height="40px" style="border-radius: 50%;margin-right: 10px;" src="{{ user.profile.picture.url }}" alt="Profile" class="profile-picture">
+              {% else %}
+                <!-- Fallback: use a default avatar -->
+                <img width="40px" height="40px" style="border-radius: 50%;margin-right: 10px;" src="{% static 'assets/img/avatar.webp' %}" alt="Profile" class="profile-picture">
+              {% endif %}
+            </a>
+          </div>
+          
+            
+            <!-- Logout button -->
+            <button onclick="location.href='{% url 'account_logout' %}'" class="login_logging_btn" type="button">Logout</button>
+          
+          {% else %}
+            <!-- Show Sign Up and Login buttons if the user is not logged in -->
+            <button onclick="location.href='{% url 'account_signup' %}'" class="not_login_logging_btn" type="button">Sign Up</button>
+            <button onclick="location.href='{% url 'account_login' %}'" class="login_logging_btn" type="button">Login</button>
+          {% endif %}
+        </form>
+        
+        
+      </div>
+    </div>
+  </nav>

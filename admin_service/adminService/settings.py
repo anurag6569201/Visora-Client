@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,7 +32,16 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    "django.contrib.admin",
+    # jazzmin
+    'jazzmin',
+
+    # G-auth apps
+    'django.contrib.admin',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -47,6 +57,9 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+
+    # G-auth middleware
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = "adminService.urls"
@@ -115,9 +128,56 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = 'static/'
+STATIC_ROOT=os.path.join(BASE_DIR,'staticfiles')
+STATICFILES_DIRS=[os.path.join(BASE_DIR,'static')]
+MEDIA_URL='/media/'
+MEDIA_ROOT=os.path.join(BASE_DIR,'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = '587'
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER_EMAIL")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_USER_PASSWORD")
+EMAIL_USE_TLS=True
+EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
+
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_EMAIL_REQUIRED = True
+LOGIN_REDIRECT_URL = '/'
+
+
+
+JAZZMIN_SETTINGS = {
+    "site_title": "RFQ",
+    "site_header": "RFQ Dashboard",
+    "site_brand": "RFQ",
+    "site_logo": "../static/assets/img/avatar.webp",  # Customize with your company's logo
+    "login_logo": "../static/assets/img/avatar.webp",
+    "welcome_sign": "Welcome to RFQ Lancer Admin Panel",
+    "copyright": "therfqlancer © 2024",
+    "user_avatar": "profile.picture",  # Assuming you have a user profile picture field
+
+
+    # Footer Links
+    "footer_links": [
+        {"name": "RFQ", "url": "https://therfqlancer.in", "new_window": True},
+        {"name": "Support", "url": "mailto:support@theflavourlake5@gmail.com", "new_window": True},
+    ],
+
+    "custom_css": "../static/assets/css/jazzmin.css",
+    "custom_js": "../static/assets/js/jazzmin.js"
+}

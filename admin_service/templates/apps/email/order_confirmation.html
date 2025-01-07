@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation - TheFlavourLake.in</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .logo {
+            margin-bottom: 20px;
+        }
+        .logo img {
+            width: 120px;
+        }
+        h1 {
+            color: #333;
+            font-size: 26px;
+            margin-bottom: 15px;
+        }
+        h2 {
+            color: #444;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        p {
+            color: #555;
+            line-height: 1.6;
+            margin: 5px 0;
+        }
+        .order-summary {
+            background-color: #f8f8f8;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            color: #333;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #888;
+            text-align: center;
+        }
+        .invoice-link {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #e9661c; /* Brand Color */
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .invoice-link:hover {
+            background-color: #d05c19;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img loading="lazy" src="cid:logo_image" alt="The Flavour Lake Logo"> <!-- Logo Image -->
+        </div>
+        <h1>Order Confirmed!</h1>
+        <p>Hi <strong>{{ order.customer_name }}</strong>,</p>
+        <p>Thank you for placing an order with <strong>TheFlavourLake.in</strong>!</p>
+        <div class="order-summary">
+            <p><strong>Order ID:</strong> {{ order.order_id }}</p>
+            <p><strong>Delivery OTP:</strong> {{ delivery_otp }}</p>
+        </div>
+
+        {% if delivery_address %}
+            <h2>Delivery Address</h2>
+            <p>{{ delivery_address }}</p>
+        {% endif %}
+
+        <p>We’re preparing your order, and it’ll be on its way shortly.</p>
+        <p>Download your detailed invoice below, or click the button to view it online.</p>
+        
+        <a class="invoice-link" href="{{ invoice_url }}">View Invoice</a>
+
+        <div class="footer">
+            <p>If you have any questions or concerns, please <a href="mailto:support@theflavourlake.in">contact our support team</a>.</p>
+            <p>Thank you for choosing The Flavour Lake!</p>
+        </div>
+    </div>
+</body>
+</html>

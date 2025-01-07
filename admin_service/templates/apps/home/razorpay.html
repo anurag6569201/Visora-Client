@@ -1,0 +1,73 @@
+{% extends "account/base_entrance.html" %}
+{% load i18n %}
+{% load static %}
+{% load cart_extras %}
+{% load allauth account %}
+{% block head_title %}
+{% trans "Home" %}
+{% endblock head_title %}
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static 'assets/css/home.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">
+<script
+src="https://code.jquery.com/jquery-3.7.1.min.js"
+integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+crossorigin="anonymous"></script>
+{% endblock stylesheet %}
+{% block content %}
+
+<div class="container-fluid">
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    
+<script>
+    var options = {
+        "key": "{{ payment.key }}",
+        "amount": "{{ payment.amount }}",
+        "currency": "{{ payment.currency }}",
+        "name": "TFL",
+        "description": "Order #{{ payment.id }}",
+        "image": "../../../static/assets/img/home/tfl_logo.webp",
+        "order_id": "{{ payment.id }}",
+        "handler": function (response) {
+            window.location.href = "/cart/success/"
+            $.ajax({
+                url: "/cart/success/",
+                type: "POST",
+                data: {
+                    'razorpay_payment_id': response.razorpay_payment_id,
+                    'order_id': "{{ payment.id }}",  // Include the order ID
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function (data) {
+                    window.location.href = "/cart/success/";
+                },
+                error: function (error) {
+                    alert("Payment succeeded, but there was an error saving the data.");
+                }
+            });
+        },
+        "prefill": {
+            "name": "{{ request.user.first_name }} {{ request.user.last_name }}",
+            "email": "{{ request.user.email }}",
+            "contact": "9000090000"
+        },
+        "notes": {
+            "address": "Razorpay Corporate Office"
+        },
+        "theme": {
+            "color": "#3399cc"
+        }
+    };
+
+    var rzp1 = new Razorpay(options);
+    
+
+    rzp1.on('payment.failed', function (response) {
+        alert("Payment failed: " + response.error.description);
+    });
+    rzp1.open();
+    e.preventDefault();
+
+</script>
+</div>
+{% endblock content %}

@@ -1,0 +1,65 @@
+{% extends "account/base_entrance.html" %}
+{% load i18n %}
+{% load static %}
+{% load allauth account %}
+{% block head_title %}
+{% trans "Confirm Email Address" %}
+{% endblock head_title %}
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static 'assets/css/login.css' %}">
+<style>
+    form{
+        width: 100% !important;
+    }
+    form button{
+        background-color: #E9661D;
+        border-radius: 25px;
+        border: none;
+        padding: 10px;
+        color: white;
+        width:100%;
+    }
+</style>
+{% endblock stylesheet %}
+{% block content %}
+<div class="login_container">
+    <div style="border: 1px solid #cfd0d1;padding: 20px;border-radius: 35px;">
+        <h3 style="text-align: center;">Confirm Email Address</h3>
+
+            {% if confirmation %}
+            {% user_display confirmation.email_address.user as user_display %}
+            {% if can_confirm %}
+                {% element p %}
+                    {% blocktrans with confirmation.email_address.email as email %}Please confirm that <a href="mailto:{{ email }}">{{ email }}</a> is an email address for user {{ user_display }}.{% endblocktrans %}
+                {% endelement %}
+                {% url 'account_confirm_email' confirmation.key as action_url %}
+                {% element form method="post" action=action_url %}
+                    {% slot actions %}
+                        {% csrf_token %}
+                        {{ redirect_field }}
+                        {% element button type="submit" tags="confirmemail" %}
+                            {% trans 'Confirm' %}
+                        {% endelement %}
+                    {% endslot %}
+                {% endelement %}
+            {% else %}
+                {% element p %}
+                    {% blocktrans %}Unable to confirm {{ email }} because it is already confirmed by a different account.{% endblocktrans %}
+                {% endelement %}
+            {% endif %}
+        {% else %}
+            {% url 'account_email' as email_url %}
+            {% element p %}
+                {% blocktrans %}This email confirmation link expired or is invalid. Please <a href="{{ email_url }}">issue a new email confirmation request</a>.{% endblocktrans %}
+            {% endelement %}
+        {% endif %}
+    </div>
+</div>
+
+{% endblock content %}
+{% block extra_body %}
+{{ block.super }}
+{% if PASSKEY_LOGIN_ENABLED %}
+{% include "mfa/webauthn/snippets/login_script.html" with button_id="passkey_login" %}
+{% endif %}
+{% endblock %}
