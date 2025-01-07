@@ -202,6 +202,9 @@
   .crousal_heading_btn{
     background-color: #5a23c8;
   }
+  .crousal_heading_btn:hover{
+    background-color: #5a23c8ba;
+  }
   .carousel-indicators [data-bs-target]{
     height: 10px !important;
     border-radius: 4px !important;
@@ -215,4 +218,14 @@
     font-size: 2rem;
     color: #5a23c8;
     font-weight: 800;
+  }
+  .landing_about_us{
+    background-image: url(../images/blob-haikei1.svg);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: center center;
+  }
+  .landing_about_us p{
+    mix-blend-mode: difference;
+    color: white;
   }

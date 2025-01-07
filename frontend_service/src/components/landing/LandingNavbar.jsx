@@ -1,34 +1,36 @@
+import { Link } from "react-router-dom";
+
 function LandingNavbar() {
     return (
-        <header data-bs-theme="dark" class="landing_header_navbar">
-            <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-                <div class="container-fluid">
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
+        <header data-bs-theme="dark" className="landing_header_navbar">
+            <nav className="navbar navbar-expand-md navbar-dark bg-dark">
+                <div className="container-fluid">
+                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                        <span className="navbar-toggler-icon"></span>
                     </button>
-                    <div class="collapse navbar-collapse" id="navbarCollapse">
-                        <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                            <li class="nav-item">
-                                <a style={{gap:'5px'}} class="nav-link active d-flex justify-content-center align-items-center" aria-current="page" href="#"><i class="bi bi-house"></i> Home</a>
+                    <div className="collapse navbar-collapse" id="navbarCollapse">
+                        <ul className="navbar-nav me-auto mb-2 mb-md-0">
+                            <li className="nav-item">
+                                <Link className="nav-link active d-flex justify-content-center align-items-center" to="/"><i className="bi bi-house"></i> Home</Link>
                             </li>
-                            <li class="nav-item">
-                                <a style={{gap:'5px'}} class="nav-link active d-flex justify-content-center align-items-center" aria-current="page" href="#"><i class="bi bi-file-earmark-person"></i> About</a>
+                            <li className="nav-item">
+                                <Link className="nav-link active d-flex justify-content-center align-items-center" to="/about"><i className="bi bi-file-earmark-person"></i> About</Link>
                             </li>
-                            <li class="nav-item">
-                                <a style={{gap:'5px'}} class="nav-link active d-flex justify-content-center align-items-center" aria-current="page" href="#"><i class="bi bi-person-lines-fill"></i> Contact</a>
+                            <li className="nav-item">
+                                <Link className="nav-link active d-flex justify-content-center align-items-center" to="/contact"><i className="bi bi-person-lines-fill"></i> Contact</Link>
                             </li>
-                            <li class="nav-item">
-                                <a style={{gap:'5px'}} class="nav-link active d-flex justify-content-center align-items-center" aria-current="page" href="#"><i class="bi bi-file-earmark-medical"></i> Sign-Up</a>
+                            <li className="nav-item">
+                                <Link className="nav-link active d-flex justify-content-center align-items-center" to="/signup"><i className="bi bi-file-earmark-medical"></i> Sign-Up</Link>
                             </li>
-                            <li class="nav-item">
-                                <a style={{gap:'5px'}} class="nav-link active d-flex justify-content-center align-items-center" aria-current="page" href="#"><i class="bi bi-box-arrow-in-right"></i> Log-in</a>
+                            <li className="nav-item">
+                                <Link className="nav-link active d-flex justify-content-center align-items-center" to="/login"><i className="bi bi-box-arrow-in-right"></i> Log-in</Link>
                             </li>
                         </ul>
                     </div>
                 </div>
             </nav>
         </header>
-    )
+    );
 }
 
-export default LandingNavbar
+export default LandingNavbar;

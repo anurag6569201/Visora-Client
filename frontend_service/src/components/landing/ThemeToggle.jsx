@@ -52,7 +52,7 @@ const ThemeToggle = () => {
                                 <svg className="bi me-2 opacity-50" width="1em" height="1em">
                                     <use
                                         href={
-                                            mode === 'dark'
+                                            mode === 'light'
                                                 ? '#moon-stars-fill'
                                                 : mode === 'light'
                                                     ? '#sun-fill'
