@@ -10,12 +10,12 @@ import LandingFooter from "./components/landing/LandingFooter.jsx";
 
 import LandingAbout from "./components/landing/LandingAbout.jsx";
 import LandingContact from "./components/landing/LandingContact.jsx";
-import LandingLogin from "./components/landing/LandingLogin.jsx";
-import LandingSignup from "./components/landing/LandingSignup.jsx";
+import GLogin from "./components/authentication/GLogin.jsx";
+import GRegister from "./components/authentication/GRegister.jsx";
 
 function Landing() {
     return (
-        <Router>
+        <>
             <ThemeProvider>
                 <ThemeToggle />
             </ThemeProvider>
@@ -26,14 +26,14 @@ function Landing() {
                 <Route path="/" element={<LandingCrousal />} />
                 <Route path="/about" element={<LandingAbout />} />
                 <Route path="/contact" element={<LandingContact />} />
-                <Route path="/signup" element={<LandingSignup />} />
-                <Route path="/login" element={<LandingLogin />} />
+                <Route path="/signup" element={<GRegister />} />
+                <Route path="/login" element={<GLogin />} />
             </Routes>
 
             <main>
                 <LandingFooter />
             </main>
-        </Router>
+        </>
     );
 }
 

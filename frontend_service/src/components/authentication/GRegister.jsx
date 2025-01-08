@@ -3,12 +3,12 @@ import '../../assets/landing/css/login.css'
 import google from '../../assets/landing/images/google.webp'
 import contact from '../../assets/landing/images/contact.svg'
 
-function LandingLogin() {
+function GRegister() {
     return (
         <>
             <div className="container login_container px-4 pt-5 my-5">
                 <div className="row">
-                    <div className='col-md-6 d-flex justify-content-center ' style={{ flexDirection: 'column' }}>
+                    <div className='col-md-6 d-flex justify-content-center ' style={{flexDirection:'column'}}>
                         <h6>
                             Already a member? <a className="logging_register" href="/login">Login Here</a>
                         </h6>
@@ -56,7 +56,7 @@ function LandingLogin() {
                         </form>
                     </div>
                     <div className="col-md-6 d-flex justify-content-center align-items-center">
-                        <img src={contact} alt="" width="80%" />
+                        <img src={contact}  alt="" width="80%"/>
                     </div>
                 </div>
                 <hr />
@@ -65,4 +65,4 @@ function LandingLogin() {
     );
 }
 
-export default LandingLogin;
+export default GRegister;
