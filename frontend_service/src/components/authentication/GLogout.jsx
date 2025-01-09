@@ -32,23 +32,22 @@ function GLogout() {
 
     return (
         <>
-            <div className="container login_container px-4 pt-5 my-5">
-                <div className="row">
-                    <div className="col-md-6 d-flex justify-content-center" style={{ flexDirection: 'column' }}>
+            <div className="container login_container">
+                <div className="row" style={{flexDirection:'column-reverse'}}>
+                    <div className="col-md-12 d-flex justify-content-center" style={{ flexDirection: 'column' }}>
                         <h6>Logout?</h6>
                         <p>Are you sure you want to Logout?</p>
                         <button
-                            className="btn btn-danger login_logging_btn"
+                            className="btn btn-danger login_logging_btn crousal_heading_btn"
                             onClick={handleLogout}
                         >
                             Sign Out
                         </button>
                     </div>
-                    <div className="col-md-6 d-flex justify-content-center align-items-center">
-                        <img src={contact} alt="Logout Illustration" width="80%" />
+                    <div className="col-md-12 d-flex justify-content-center align-items-center">
+                        <img src={contact} alt="Logout Illustration" width="400px" />
                     </div>
                 </div>
-                <hr />
             </div>
         </>
     );

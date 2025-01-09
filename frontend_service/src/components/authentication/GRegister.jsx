@@ -11,7 +11,7 @@ function GRegister() {
                     <div className='col-md-6 d-flex justify-content-center ' style={{flexDirection:'column'}}>
                         <h6>
                             Already a member? <a className="logging_register" href="/login">Login Here</a>
-                        </h6>
+                        </h6><br />
                         <form method="post" action="/accounts/signup/">
                             <div className="row">
                                 <div className="col-md-6">

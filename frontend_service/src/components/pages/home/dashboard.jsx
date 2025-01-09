@@ -1,7 +1,7 @@
 import React from "react";
 import MainRightBar from "./components/mainbar";
 import '../../../assets/mainpage/home/css/dashboard.css'
-const Home = () => {
+const MainDashboard = () => {
     return (
         <>
             <MainRightBar/>
@@ -9,4 +9,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default MainDashboard;

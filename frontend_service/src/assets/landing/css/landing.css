@@ -229,3 +229,9 @@
     mix-blend-mode: difference;
     color: white;
   }
+  .landing_header_navbar .nav-item .nav-link{
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px;
+    justify-content: center !important;
+  }

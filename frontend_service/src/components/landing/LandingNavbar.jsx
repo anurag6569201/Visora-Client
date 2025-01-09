@@ -11,19 +11,19 @@ function LandingNavbar() {
                     <div className="collapse navbar-collapse" id="navbarCollapse">
                         <ul className="navbar-nav me-auto mb-2 mb-md-0">
                             <li className="nav-item">
-                                <Link className="nav-link active d-flex justify-content-center align-items-center" to="/"><i className="bi bi-house"></i> Home</Link>
+                                <Link className="nav-link active d-flex justify-content-center align-items-center" to="/"><i className="bi bi-house"></i> <span>Home</span></Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link active d-flex justify-content-center align-items-center" to="/about"><i className="bi bi-file-earmark-person"></i> About</Link>
+                                <Link className="nav-link active d-flex justify-content-center align-items-center" to="/about"><i className="bi bi-file-earmark-person"></i> <span>About</span></Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link active d-flex justify-content-center align-items-center" to="/contact"><i className="bi bi-person-lines-fill"></i> Contact</Link>
+                                <Link className="nav-link active d-flex justify-content-center align-items-center" to="/contact"><i className="bi bi-person-lines-fill"></i> <span>Contact</span></Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link active d-flex justify-content-center align-items-center" to="/signup"><i className="bi bi-file-earmark-medical"></i> Sign-Up</Link>
+                                <Link className="nav-link active d-flex justify-content-center align-items-center" to="/signup"><i className="bi bi-file-earmark-medical"></i> <span>Sign-Up</span></Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link active d-flex justify-content-center align-items-center" to="/login"><i className="bi bi-box-arrow-in-right"></i> Log-in</Link>
+                                <Link className="nav-link active d-flex justify-content-center align-items-center" to="/login"><i className="bi bi-box-arrow-in-right"></i> <span>Log-in</span></Link>
                             </li>
                         </ul>
                     </div>

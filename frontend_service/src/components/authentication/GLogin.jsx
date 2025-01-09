@@ -51,7 +51,7 @@ function GLogin() {
                     <div className="col-md-6 d-flex justify-content-center" style={{ flexDirection: 'column' }}>
                         <h6>
                             New Member? <a className="logging_register" href="/signup">Register Here</a>
-                        </h6>
+                        </h6><br />
                         <form onSubmit={handleLogin}>
                             <div className="row">
                                 <div className="col-md-6">
@@ -86,13 +86,14 @@ function GLogin() {
                                 </div>
                             </div>
                             <p className="login_remember">
-                                <label htmlFor="remember">Remember Me:</label>
+                                <label htmlFor="remember" style={{display:'inline-block'}}>Remember Me:</label>
                                 <input
                                     type="checkbox"
                                     name="remember"
                                     id="remember"
                                     checked={rememberMe}
                                     onChange={(e) => setRememberMe(e.target.checked)}
+                                    style={{width:'min-content',marginBottom:'0'}}
                                 />
                             </p>
                             {error && <p className="text-danger">{error}</p>}
@@ -103,15 +104,18 @@ function GLogin() {
                                 Login
                             </button>
                         </form>
-                        <p className="text-center my-4">Or</p>
-                        <p className="text-center">
-                            <a
-                                href="https://theflavourlake.in/accounts/google/login/?process=login"
-                                className="login_by_google"
-                            >
-                                <img src={google} alt="Google" style={{ width: '26px', marginRight: '8px' }} />
-                                Login with Google
-                            </a>
+                        <p style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }} className="mt-4 mb-4">
+                            <span style={{ width: '40%', margin: '0 10px', borderTop: '1px solid #cfd0d1' }}></span>
+                            <span>Or</span>
+                            <span style={{ width: '40%', margin: '0 10px', borderTop: '1px solid #cfd0d1' }}></span>
+                        </p>
+                        <p style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <span className="login_by_google">
+                                <a style={{ display: 'flex', gap: '10px', justifyContent: 'center', alignItems: 'center' }} href="https://theflavourlake.in/accounts/google/login/?process=login">
+                                    <img loading="lazy" style={{ width: '26px' }} src={google} alt="Google" />
+                                    Google
+                                </a>
+                            </span>
                         </p>
                     </div>
                     <div className="col-md-6 d-flex justify-content-center align-items-center">
