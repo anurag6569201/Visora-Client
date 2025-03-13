@@ -1,6 +1,8 @@
 import React from "react";
+import { useNavigate } from 'react-router-dom';
 
 function MainSideBar() {
+    const navigate = useNavigate();
     return (
         <>
             <div class="sidebar border border-right col-md-3 col-lg-2 p-0 bg-body-tertiary">
@@ -14,13 +16,13 @@ function MainSideBar() {
                     <div class="offcanvas-body d-md-flex flex-column flex-shrink-0 p-3 pt-lg-3 overflow-y-auto sidebar">
                         <ul class="nav nav-pills flex-column mb-auto">
                             <li class="nav-item">
-                                <a href="#" class="nav-link active" aria-current="page">
+                                <a  onClick={() => navigate('/app/home')} class="nav-link active" aria-current="page">
                                     <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home" /></svg>
                                     Home
                                 </a>
                             </li>
                             <li>
-                                <a href="#" class="nav-link text-white">
+                                <a  onClick={() => navigate('/app/dashboard')} class="nav-link text-white">
                                     <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#speedometer2" /></svg>
                                     Dashboard
                                 </a>
@@ -55,7 +57,7 @@ function MainSideBar() {
                                 <li><a class="dropdown-item" href="#">Settings</a></li>
                                 <li><a class="dropdown-item" href="#">Profile</a></li>
                                 <li><hr class="dropdown-divider" /></li>
-                                <li><a class="dropdown-item" href="#">Sign out</a></li>
+                                <li><a class="dropdown-item"  onClick={() => navigate('/app/logout')}>Sign out</a></li>
                             </ul>
                         </div>
                     </div>

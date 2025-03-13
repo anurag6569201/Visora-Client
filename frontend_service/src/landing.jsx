@@ -13,6 +13,7 @@ import LandingContact from "./components/landing/LandingContact.jsx";
 import GLogin from "./components/authentication/GLogin.jsx";
 import GRegister from "./components/authentication/GRegister.jsx";
 
+import Message from "./testing.jsx";
 function Landing() {
     return (
         <>
@@ -21,7 +22,7 @@ function Landing() {
             </ThemeProvider>
 
             <LandingNavbar />
-
+            {/* <Message text="React is awesome!"/> */}
             <Routes>
                 <Route path="/" element={<LandingCrousal />} />
                 <Route path="/about" element={<LandingAbout />} />

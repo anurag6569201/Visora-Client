@@ -17,8 +17,8 @@ function LandingCrousal() {
                         <div class="bd-placeholder-img row" width="100%" height="100%">
                             <div className="col-md-6">
                                 <div className='crousal_heading'>
-                                    <h1><span>RFQ</span> <br />Management</h1>
-                                    <p>Streamlining procurement with seamless RFQ management—empowering organizations to easily request, compare, and manage quotations for efficient decision-making.</p>
+                                    <h1><span>AI-Powered</span> <br />Study Planner</h1>
+                                    <p>Transforming education with an AI-driven study planner—helping educators create, manage, and optimize learning schedules effortlessly.</p>
                                     <p><a class="btn btn-secondary crousal_heading_btn" href="#">Learn more</a></p>
                                 </div>
                             </div>
@@ -26,14 +26,14 @@ function LandingCrousal() {
                                 <img src={Crousal1}  alt="" width="80%"/>
                             </div>
                         </div>
-                        
                     </div>
+
                     <div class="carousel-item">
                         <div class="bd-placeholder-img row" width="100%" height="100%">
                             <div className="col-md-6">
                                 <div className='crousal_heading'>
-                                    <h1><span>Trust </span> <br />Excellence</h1>
-                                    <p>Enhancing customer loyalty through seamless quality improvement—empowering organizations to build trust and foster lasting relationships.</p>
+                                    <h1><span>Personalized</span> <br />Learning Experience</h1>
+                                    <p>Empowering students with AI-driven personalized content recommendations—tailoring simulations, animations, and theory to their unique learning styles with ai generated questions.</p>
                                     <p><a class="btn btn-secondary crousal_heading_btn" href="#">Learn more</a></p>
                                 </div>
                             </div>
@@ -41,14 +41,14 @@ function LandingCrousal() {
                                 <img src={Crousal2}  alt="" width="80%"/>
                             </div>
                         </div>
-                        
                     </div>
+
                     <div class="carousel-item">
                         <div class="bd-placeholder-img row" width="100%" height="100%">
                             <div className="col-md-6">
                                 <div className='crousal_heading'>
-                                    <h1><span>Vendor  </span> <br />Matching</h1>
-                                    <p>Revolutionizing vendor selection with a Tinder-like matching system—empowering buyers to discover, compare, and connect with the perfect vendors effortlessly.</p>
+                                    <h1><span>Educator-Developer</span> <br />Matching</h1>
+                                    <p>Revolutionizing the creation of branded smart educational content with intelligent educator-developer matching—connecting developers with professors and mentors based on subjects and learning goals to craft high-quality animations and simulations.</p>
                                     <p><a class="btn btn-secondary crousal_heading_btn" href="#">Learn more</a></p>
                                 </div>
                             </div>
@@ -56,9 +56,9 @@ function LandingCrousal() {
                                 <img src={Crousal3}  alt="" width="80%"/>
                             </div>
                         </div>
-                        
                     </div>
                 </div>
+
                 <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
                     <span class="" aria-hidden="true"><i class="bi bi-arrow-left-circle-fill"></i></span>
                     <span class="visually-hidden">Previous</span>
