@@ -4,9 +4,14 @@ import '../../assets/landing/css/login.css';
 import google from '../../assets/landing/images/google.webp';
 import contact from '../../assets/landing/images/contact.svg';
 
+import { useNavigate } from "react-router-dom";
+
 function GRegister() {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         email: '',
+        first_name: '',
+        last_name: '',
         username: '',
         phone: '',
         role: 'student',
@@ -38,8 +43,10 @@ function GRegister() {
 
         const data = new FormData();
         data.append('email', formData.email);
+        data.append('first_name', formData.first_name);
+        data.append('last_name', formData.last_name);
         data.append('username', formData.username);
-        data.append('phone', formData.phone);
+        data.append('phone_number', formData.phone);
         data.append('role', formData.role);
         data.append('password1', formData.password1);
         data.append('password2', formData.password2);
@@ -54,7 +61,9 @@ function GRegister() {
                 { headers: { 'Content-Type': 'multipart/form-data' } }
             );
 
-            alert('Registration successful! Please check your email.');
+            alert('Registration successful!');
+            navigate("/login");
+            
         } catch (error) {
             setError(error.response?.data || 'Something went wrong');
         } finally {
@@ -74,10 +83,10 @@ function GRegister() {
 
                             <div className="col-md-6">
                                 <div className="card-body p-4 p-xl-5">
-                                    <h3 className="mb-4 text-center fw-bold text-primary">Create Account</h3>
+                                    <h3 className="mb-4 text-center fw-bold" style={{color:'#ffffff'}}>Create Account</h3>
                                     <p className="text-muted text-center mb-4">
                                         Already a member?
-                                        <a href="/login" className="text-decoration-none text-primary ms-1">Sign in here</a>
+                                        <a href="/login" className="text-decoration-none ms-1" style={{color:'#712cf8'}}>Sign in here</a>
                                     </p>
 
                                     {error && <div className="alert alert-danger">{error}</div>}
@@ -90,6 +99,23 @@ function GRegister() {
                                                         placeholder="name@example.com" required
                                                         value={formData.email} onChange={handleChange} />
                                                     <label>Email address</label>
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <div className="form-floating">
+                                                    <input type="text" className="form-control" name="first_name"
+                                                        placeholder="First Name" required
+                                                        value={formData.first_name} onChange={handleChange} />
+                                                    <label>First Name</label>
+                                                </div>
+                                            </div>
+
+                                            <div className="col-md-6">
+                                                <div className="form-floating">
+                                                    <input type="text" className="form-control" name="last_name"
+                                                        placeholder="Last Name" required
+                                                        value={formData.last_name} onChange={handleChange} />
+                                                    <label>Last Name</label>
                                                 </div>
                                             </div>
 
@@ -145,7 +171,7 @@ function GRegister() {
 
                                             <div className="col-12">
                                                 <div className="d-flex flex-column align-items-center">
-                                                    <label className="btn btn-outline-primary rounded-pill position-relative">
+                                                    <label className="btn btn-outline-primary upload_profile_pic_btn rounded-pill position-relative" style={{ color: '#712cf8', borderColor: '#712cf8' }}>
                                                         <input type="file" accept="image/*"
                                                             className="visually-hidden"
                                                             onChange={handleImageChange} />
@@ -163,8 +189,8 @@ function GRegister() {
                                             </div>
 
                                             <div className="col-12 d-grid mt-4">
-                                                <button className="btn btn-primary btn-lg rounded-pill"
-                                                    type="submit" disabled={loading}>
+                                                <button className="btn btn-primary account_creating_btn btn-lg rounded-pill"
+                                                    type="submit" disabled={loading} style={{background:'#712cf8'}}>
                                                     {loading ? 'Creating Account...' : 'Create Account'}
                                                 </button>
                                             </div>

@@ -92,3 +92,8 @@
         padding: 10px;
     }
 }
+.account_creating_btn:hover,
+.upload_profile_pic_btn:hover{
+    background-color: white !important;
+    color: #712cf8;
+}

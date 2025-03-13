@@ -5,7 +5,7 @@ import contact from '../../assets/landing/images/contact.svg';
 import { useNavigate } from 'react-router-dom';
 
 function GLogin() {
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [rememberMe, setRememberMe] = useState(false);
     const [error, setError] = useState('');
@@ -15,7 +15,7 @@ function GLogin() {
         e.preventDefault(); // Prevent form submission
 
         const payload = {
-            email: email,
+            username: username,
             password: password,
             remember: rememberMe,
         };
@@ -56,16 +56,16 @@ function GLogin() {
                             <div className="row">
                                 <div className="col-md-6">
                                     <p>
-                                        <label htmlFor="email">Email:</label>
+                                        <label htmlFor="username">Username:</label>
                                         <input
-                                            type="email"
-                                            name="email"
-                                            placeholder="Please Enter Your Email"
+                                            type="username"
+                                            name="username"
+                                            placeholder="Please Enter Your Username"
                                             autoComplete="username"
-                                            value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
+                                            value={username}
+                                            onChange={(e) => setUsername(e.target.value)}
                                             required
-                                            id="email"
+                                            id="username"
                                         />
                                     </p>
                                 </div>
