@@ -1,70 +1,126 @@
-import React from "react";
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState,useContext } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import "bootstrap-icons/font/bootstrap-icons.css"; // Import Bootstrap Icons
+
+import UserContext from "../../../../global/Context";
 
 function MainSideBar() {
     const navigate = useNavigate();
+    const location = useLocation(); // Get current route
+
+    const { user } = useContext(UserContext);
+
     return (
-        <>
-            <div class="sidebar border border-right col-md-3 col-lg-2 p-0 bg-body-tertiary">
-                <div class="offcanvas-md offcanvas-end bg-body-tertiary" tabindex="-1" id="sidebarMenu"
-                    aria-labelledby="sidebarMenuLabel">
-                    <div class="offcanvas-header">
-                        <h5 class="offcanvas-title" id="sidebarMenuLabel">Company name</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarMenu"
-                            aria-label="Close"></button>
-                    </div>
-                    <div class="offcanvas-body d-md-flex flex-column flex-shrink-0 p-3 pt-lg-3 overflow-y-auto sidebar">
-                        <ul class="nav nav-pills flex-column mb-auto">
-                            <li class="nav-item">
-                                <a  onClick={() => navigate('/app/home')} class="nav-link active" aria-current="page">
-                                    <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home" /></svg>
-                                    Home
+        <div className="sidebar border-end col-md-3 col-lg-2 p-0 bg-body-tertiary">
+            <div
+                className="offcanvas-md offcanvas-end bg-body-tertiary"
+                tabIndex="-1"
+                id="sidebarMenu"
+                aria-labelledby="sidebarMenuLabel"
+            >
+                <div className="offcanvas-header">
+                    <h5 className="offcanvas-title" id="sidebarMenuLabel">
+                        Company Name
+                    </h5>
+                    <button
+                        type="button"
+                        className="btn-close"
+                        data-bs-dismiss="offcanvas"
+                        data-bs-target="#sidebarMenu"
+                        aria-label="Close"
+                    ></button>
+                </div>
+
+                <div className="offcanvas-body d-md-flex flex-column flex-shrink-0 p-3 pt-lg-3 overflow-y-auto sidebar">
+                    <ul className="nav nav-pills flex-column mb-auto">
+                        <li className="nav-item">
+                            <a 
+                                onClick={() => navigate("/app/discover")} 
+                                className={`nav-link ${location.pathname === "/app/discover" ? "active" : ""}`}
+                            >
+                                <i className="bi bi-house-door me-2"></i> Discover
+                            </a>
+                        </li>
+                        <li>
+                            <a 
+                                onClick={() => navigate("/app/dashboard")} 
+                                className={`nav-link ${location.pathname === "/app/dashboard" ? "active" : "text-white"}`}
+                            >
+                                <i className="bi bi-speedometer2 me-2"></i> Dashboard
+                            </a>
+                        </li>
+                        <li>
+                            <a 
+                                onClick={() => navigate("/app/orders")} 
+                                className={`nav-link ${location.pathname === "/app/orders" ? "active" : "text-white"}`}
+                            >
+                                <i className="bi bi-table me-2"></i> Orders
+                            </a>
+                        </li>
+                        <li>
+                            <a 
+                                onClick={() => navigate("/app/products")} 
+                                className={`nav-link ${location.pathname === "/app/products" ? "active" : "text-white"}`}
+                            >
+                                <i className="bi bi-grid me-2"></i> Products
+                            </a>
+                        </li>
+                        <li>
+                            <a 
+                                onClick={() => navigate("/app/customers")} 
+                                className={`nav-link ${location.pathname === "/app/customers" ? "active" : "text-white"}`}
+                            >
+                                <i className="bi bi-people me-2"></i> Customers
+                            </a>
+                        </li>
+                    </ul>
+                    <hr />
+                    <div className="dropdown">
+                        <a
+                            href="#"
+                            className="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                        >
+                            <img
+                                src={user ? user.profile_picture : "Loading..."}
+                                alt=""
+                                width="32"
+                                height="32"
+                                className="rounded-circle me-2"
+                            />
+                            <strong>{user ? user.username : "Loading..."}</strong>
+                        </a>
+                        <ul className="dropdown-menu dropdown-menu-dark text-small shadow">
+                            <li>
+                                <a className="dropdown-item" href="#">
+                                    New project...
                                 </a>
                             </li>
                             <li>
-                                <a  onClick={() => navigate('/app/dashboard')} class="nav-link text-white">
-                                    <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#speedometer2" /></svg>
-                                    Dashboard
+                                <a className="dropdown-item" href="#">
+                                    Settings
                                 </a>
                             </li>
                             <li>
-                                <a href="#" class="nav-link text-white">
-                                    <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table" /></svg>
-                                    Orders
+                                <a className="dropdown-item"  onClick={() => navigate("/app/profile")}>
+                                    Profile
                                 </a>
                             </li>
                             <li>
-                                <a href="#" class="nav-link text-white">
-                                    <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid" /></svg>
-                                    Products
-                                </a>
+                                <hr className="dropdown-divider" />
                             </li>
                             <li>
-                                <a href="#" class="nav-link text-white">
-                                    <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#people-circle" /></svg>
-                                    Customers
+                                <a className="dropdown-item" onClick={() => navigate("/app/logout")}>
+                                    Sign out
                                 </a>
                             </li>
                         </ul>
-                        <hr />
-                        <div class="dropdown">
-                            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2" />
-                                <strong>mdo</strong>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                                <li><a class="dropdown-item" href="#">New project...</a></li>
-                                <li><a class="dropdown-item" href="#">Settings</a></li>
-                                <li><a class="dropdown-item" href="#">Profile</a></li>
-                                <li><hr class="dropdown-divider" /></li>
-                                <li><a class="dropdown-item"  onClick={() => navigate('/app/logout')}>Sign out</a></li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
             </div>
-        </>
-    )
+        </div>
+    );
 }
 
-export default MainSideBar
+export default MainSideBar;

@@ -1,40 +1,61 @@
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import "bootstrap-icons/font/bootstrap-icons.css"; // Import Bootstrap Icons
+import '../../../../assets/mainpage/navbar/topbar.css'
 
 function TopBar() {
     const navigate = useNavigate();
+    const [showSearch, setShowSearch] = useState(false);
+    const searchRef = useRef(null);
+
+    // Hide search bar when clicking outside
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (searchRef.current && !searchRef.current.contains(event.target)) {
+                setShowSearch(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
     return (
-        <>
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">Dashboard</h1>
-                <div class="btn-toolbar mb-2 mb-md-0">
-                    <div class="btn-group me-2">
-                        <button type="button" class="btn btn-secondary crousal_heading_btn" onClick={() => navigate('/app/logout')}>Log-Out</button>
+        <div className="d-flex justify-content-between align-items-center py-2 border-bottom">
+            {/* Search Icon (Click to Show Search Bar) */}
+            {!showSearch && (
+                <button className="btn topbar_btn border-1" onClick={() => setShowSearch(true)}>
+                    <i className="bi bi-search fs-5"></i> {/* Search Icon */}
+                </button>
+            )}
+
+            {/* Search Bar (Appears when clicked) */}
+            {showSearch && (
+                <div ref={searchRef} className="flex-grow-1 me-3">
+                    <div className="input-group">
+                        <span className="input-group-text border-1">
+                            <i className="bi bi-search text-muted"></i> {/* Search Icon */}
+                        </span>
+                        <input 
+                            type="text" 
+                            className="form-control border-1 shadow-none" 
+                            placeholder="Search..." 
+                            autoFocus
+                            onKeyDown={(e) => e.key === "Escape" && setShowSearch(false)}
+                        />
                     </div>
                 </div>
-                <ul class="navbar-nav flex-row d-md-none">
-                    <li class="nav-item text-nowrap">
-                        <button class="nav-link px-3 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSearch"
-                            aria-controls="navbarSearch" aria-expanded="false" aria-label="Toggle search">
-                            <svg class="bi">
-                                <use xlink:href="#search" />
-                            </svg>
-                        </button>
-                    </li>
-                    <li class="nav-item text-nowrap">
-                        <button class="nav-link px-3 text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu"
-                            aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-                            <svg class="bi">
-                                <use xlink:href="#list" />
-                            </svg>
-                        </button>
-                    </li>
-                </ul>
+            )}
 
-                <div id="navbarSearch" class="navbar-search w-100 collapse">
-                    <input class="form-control w-100 rounded-0 border-0" type="text" placeholder="Search" aria-label="Search" />
-                </div>
-            </div>
-        </>
-    )
+            {/* Logout Button */}
+            <button 
+                type="button" 
+                className="btn btn-secondary crousal_heading_btn"
+                onClick={() => navigate('/app/logout')}
+            >
+                <i className="bi bi-box-arrow-right me-1"></i> Log Out
+            </button>
+        </div>
+    );
 }
-export default TopBar
+
+export default TopBar;

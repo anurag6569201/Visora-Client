@@ -9,16 +9,20 @@ import MainPage from './mainpage.jsx';
 import ProtectedRoute from './components/authentication/ProtectedRoute'; // Add ProtectedRoute component
 import PublicRoute from "./components/authentication/PublicRoute";
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <Router>
-      <Routes>
-        {/* Public routes for Landing */}
-        <Route path="/*" element={<PublicRoute><Landing /></PublicRoute>} />
+import { UserProvider } from "./global/Context.jsx";
 
-        {/* Protected route for MainPage */}
-        <Route path="/app/*" element={<ProtectedRoute><MainPage /></ProtectedRoute>} />
-      </Routes>
-    </Router>
-  </StrictMode>
+createRoot(document.getElementById('root')).render(
+  <UserProvider>
+    <StrictMode>
+      <Router>
+        <Routes>
+          {/* Public routes for Landing */}
+          <Route path="/*" element={<PublicRoute><Landing /></PublicRoute>} />
+
+          {/* Protected route for MainPage */}
+          <Route path="/app/*" element={<ProtectedRoute><MainPage /></ProtectedRoute>} />
+        </Routes>
+      </Router>
+    </StrictMode>
+  </UserProvider>
 );
