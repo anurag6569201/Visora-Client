@@ -11,6 +11,14 @@ import GLogout from "./components/authentication/GLogout.jsx";
 import TopBar from "./components/pages/home/components/topbar.jsx";
 
 import UserProfile from "./components/pages/profile/UserProfile.jsx";
+
+
+
+{/* developer routes */}
+import CodeEditor from "./developer/DeveloperMain.jsx";
+import FullPreview from "./developer/FullPreview.jsx";
+import deploy from "./developer/vercel/Deploy.jsx";
+import Deploy from "./developer/vercel/Deploy.jsx";
 function MainPage() {
     return (
         <>
@@ -29,6 +37,12 @@ function MainPage() {
 
 
                             <Route path="profile/" element={<UserProfile />} />
+
+
+                            {/* developer routes */}
+                            <Route path="dev/editor" element={<CodeEditor />} />
+                            <Route path="dev/preview" element={<FullPreview />} />
+                            <Route path="dev/vercel/deploy" element={<Deploy />} />
                         </Routes>
                     </main>
                 </div>

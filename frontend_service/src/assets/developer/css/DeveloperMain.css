@@ -1,0 +1,96 @@
+/* DeveloperMain.css */
+body {
+    --bg-color: #121212;
+    --border-color: #2b3035;
+    --text-color: #e9ecef;
+    --primary-color: #5923c8;
+    margin: 0;
+  }
+  
+  .monaco-editor .margin, 
+  .monaco-editor .minimap {
+    background-color: #1a1a1a !important;
+  }
+  
+  .dev-editor .nav-pills .nav-link {
+    background: transparent;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    padding: 0.5rem 1rem;
+    border: 1px solid transparent;
+  }
+  
+  .dev-editor .nav-pills .nav-link.active {
+    background: transparent !important;
+    color: var(--primary-color) !important;
+    border-bottom: 2px solid var(--primary-color);
+  }
+  
+  .dev-editor .nav-pills .nav-link:hover:not(.active) {
+    background: #2b3035;
+    border-color: var(--border-color);
+  }
+  
+  .dev-editor .btn-outline-primary {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    transition: all 0.3s ease;
+  }
+  
+  .dev-editor .btn-outline-primary:hover {
+    background: var(--primary-color);
+    color: white;
+  }
+  
+  .dev-editor .preview-header {
+    background: #2b3035;
+    height: 40px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  
+  .dev-editor .preview-container {
+    height: calc(100% - 40px);
+    transition: all 0.3s ease;
+  }
+  
+  .dev-editor .desktop-view {
+    width: 100%;
+  }
+  
+  .dev-editor .mobile-view {
+    width: 375px;
+    margin: 0 auto;
+    height: calc(100% - 50px);
+    border: 10px solid #2b3035;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+  
+  /* Scrollbar Styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: var(--bg-color);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #444;
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+
+
+  .dev-editor .margin-view-overlays{
+    text-align: center !important;
+  }
+  .dev-editor .monaco-editor .margin-view-overlays .line-numbers{
+    position: relative !important;
+  }

@@ -33,7 +33,7 @@ function GLogin() {
                 const data = await response.json();
                 // Handle successful login (e.g., save token, redirect user)
                 localStorage.setItem('authToken', data.key); // Save auth token to localStorage
-                navigate('/app/home');
+                navigate('/app/discover');
             } else {
                 const errorData = await response.json();
                 setError(errorData.non_field_errors || 'Login failed. Please try again.');

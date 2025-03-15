@@ -1,12 +1,14 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useContext,useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css"; // Import Bootstrap Icons
 import '../../../../assets/mainpage/navbar/topbar.css'
+import UserContext from "../../../../global/Context";
 
 function TopBar() {
     const navigate = useNavigate();
     const [showSearch, setShowSearch] = useState(false);
     const searchRef = useRef(null);
+    const { user } = useContext(UserContext);
 
     // Hide search bar when clicking outside
     useEffect(() => {
@@ -47,13 +49,25 @@ function TopBar() {
             )}
 
             {/* Logout Button */}
-            <button 
-                type="button" 
-                className="btn btn-secondary crousal_heading_btn"
-                onClick={() => navigate('/app/logout')}
-            >
-                <i className="bi bi-box-arrow-right me-1"></i> Log Out
-            </button>
+            {user?.role === "Developer" && (
+                <button 
+                    type="button" 
+                    className="btn btn-secondary crousal_heading_btn"
+                    onClick={() => navigate('/app/dev/editor')}
+                >
+                <i className="bi bi-plus" style={{fontSize:'20px'}}></i>
+                </button>
+            )}
+            {user?.role === "Student" && (
+                <button 
+                    type="button" 
+                    className="btn btn-secondary crousal_heading_btn"
+                    onClick={() => navigate('/app/logout')}
+                >
+                    <i className="bi bi-box-arrow-right me-1"></i> Log Out
+                </button>
+            )}
+
         </div>
     );
 }

@@ -84,13 +84,13 @@
 
 .showcase-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
 }
 
 .showcase-item {
-    height: 200px;
-    background: #f8f9fa;
+    height: 300px;
+    background: #2b3035;
     border-radius: 10px;
     display: flex;
     align-items: center;

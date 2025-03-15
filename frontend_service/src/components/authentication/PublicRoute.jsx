@@ -6,7 +6,7 @@ const isAuthenticated = () => {
 
 function PublicRoute({ children }) {
     if (isAuthenticated()) {
-        return <Navigate to="/app/home" replace />;
+        return <Navigate to="/app/discover" replace />;
     }
     return children;
 }
