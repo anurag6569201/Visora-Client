@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Row, Col, Nav, Button, Spinner } from 'react-bootstrap';
+import { Container, Row, Col, Nav, Button, Spinner,Modal } from 'react-bootstrap';
 import { FiCode, FiLayout, FiSettings, FiCloud, FiMonitor, FiSmartphone, FiExternalLink } from 'react-icons/fi';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../assets/developer/css/DeveloperMain.css';
+import ProjectUpload from './vercel/ProjectUpload';
 
 const CodeEditor = () => {
   // Load code from localStorage on initial state
@@ -24,6 +25,10 @@ const CodeEditor = () => {
   const [activeTab, setActiveTab] = useState('html');
   const [deploying, setDeploying] = useState(false);
   const [viewMode, setViewMode] = useState('desktop');
+  const [showModal, setShowModal] = useState(false);
+
+  const handleOpenModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
   const iframeRef = useRef(null);
 
   const navigate = useNavigate();
@@ -58,22 +63,6 @@ const CodeEditor = () => {
     return () => clearTimeout(timeout);
   }, [html, css, js]);
 
-  const handleDeploy = async () => {
-    setDeploying(true);
-    try {
-      const response = await fetch('dev/vercel/deploy', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ html, css, js })
-      });
-      const { url } = await response.json();
-      window.open(url, '_blank');
-    } catch (error) {
-      alert('Deployment failed: ' + error.message);
-    }
-    setDeploying(false);
-  };
-
   const handleFullPreview = () => {
     const newWindow = window.open('/app/dev/preview', '_blank');
     if (newWindow) newWindow.focus();
@@ -89,25 +78,33 @@ const CodeEditor = () => {
           </span>
         </div>
         <div className="d-flex gap-2">
-          <Button 
+            <Button 
             variant="outline-primary" 
             size="sm"
-            onClick={handleDeploy}
+            onClick={handleOpenModal} 
             disabled={deploying}
             className="d-flex align-items-center gap-2"
-          >
+            >
             {deploying ? (
-              <>
+                <>
                 <Spinner animation="border" size="sm" />
                 Deploying...
-              </>
+                </>
             ) : (
-              <>
+                <>
                 <FiCloud /> Deploy to Vercel
-              </>
+                </>
             )}
-          </Button>
+            </Button>
         </div>
+        <Modal show={showModal} onHide={handleCloseModal} centered>
+            <Modal.Header closeButton>
+            <Modal.Title>Upload Project</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <ProjectUpload />
+            </Modal.Body>
+        </Modal>
       </div>
 
       <Row className="flex-grow-1 m-0 py-3" style={{borderRadius:'10px'}}>

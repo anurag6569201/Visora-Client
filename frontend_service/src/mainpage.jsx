@@ -17,8 +17,8 @@ import UserProfile from "./components/pages/profile/UserProfile.jsx";
 {/* developer routes */}
 import CodeEditor from "./developer/DeveloperMain.jsx";
 import FullPreview from "./developer/FullPreview.jsx";
-import deploy from "./developer/vercel/Deploy.jsx";
-import Deploy from "./developer/vercel/Deploy.jsx";
+import ProjectUpload from "./developer/vercel/ProjectUpload.jsx";
+
 function MainPage() {
     return (
         <>
@@ -42,7 +42,7 @@ function MainPage() {
                             {/* developer routes */}
                             <Route path="dev/editor" element={<CodeEditor />} />
                             <Route path="dev/preview" element={<FullPreview />} />
-                            <Route path="dev/vercel/deploy" element={<Deploy />} />
+                            <Route path="dev/deploy" element={<ProjectUpload />} />
                         </Routes>
                     </main>
                 </div>
