@@ -19,6 +19,8 @@ import CodeEditor from "./developer/DeveloperMain.jsx";
 import FullPreview from "./developer/FullPreview.jsx";
 import ProjectUpload from "./developer/vercel/ProjectUpload.jsx";
 
+import Visions from "./visions/Visions.jsx";
+import RequestDetails from "./visions/components/RequestDetails.jsx";
 function MainPage() {
     return (
         <>
@@ -43,6 +45,10 @@ function MainPage() {
                             <Route path="dev/editor" element={<CodeEditor />} />
                             <Route path="dev/preview" element={<FullPreview />} />
                             <Route path="dev/deploy" element={<ProjectUpload />} />
+
+                            {/* visions routes */}
+                            <Route path="visions/" element={<Visions />} />
+                            <Route path="visions/requests/:id" element={<RequestDetails />} />
                         </Routes>
                     </main>
                 </div>

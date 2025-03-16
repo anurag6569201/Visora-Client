@@ -5,7 +5,6 @@ import { Container, Row, Col, Nav, Button, Spinner,Modal } from 'react-bootstrap
 import { FiCode, FiLayout, FiSettings, FiCloud, FiMonitor, FiSmartphone, FiExternalLink } from 'react-icons/fi';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../assets/developer/css/DeveloperMain.css';
-import ProjectUpload from './vercel/ProjectUpload';
 
 const CodeEditor = () => {
   // Load code from localStorage on initial state
@@ -23,12 +22,8 @@ const CodeEditor = () => {
   });
 
   const [activeTab, setActiveTab] = useState('html');
-  const [deploying, setDeploying] = useState(false);
   const [viewMode, setViewMode] = useState('desktop');
-  const [showModal, setShowModal] = useState(false);
 
-  const handleOpenModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
   const iframeRef = useRef(null);
 
   const navigate = useNavigate();
@@ -81,30 +76,11 @@ const CodeEditor = () => {
             <Button 
             variant="outline-primary" 
             size="sm"
-            onClick={handleOpenModal} 
-            disabled={deploying}
-            className="d-flex align-items-center gap-2"
-            >
-            {deploying ? (
-                <>
-                <Spinner animation="border" size="sm" />
-                Deploying...
-                </>
-            ) : (
-                <>
-                <FiCloud /> Deploy to Vercel
-                </>
-            )}
+            onClick={() => navigate("/app/dev/deploy")} 
+            className="d-flex align-items-center gap-2">
+                  <FiCloud /> Deploy to Visora
             </Button>
         </div>
-        <Modal show={showModal} onHide={handleCloseModal} centered>
-            <Modal.Header closeButton>
-            <Modal.Title>Upload Project</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <ProjectUpload />
-            </Modal.Body>
-        </Modal>
       </div>
 
       <Row className="flex-grow-1 m-0 py-3" style={{borderRadius:'10px'}}>

@@ -1,0 +1,42 @@
+.glass-card {
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+  
+  .gradient-text {
+    background: linear-gradient(45deg, #4F46E5, #EC4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .icon-wrapper {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .avatar-sm {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .avatar-xs {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .contribution-item {
+    transition: transform 0.2s;
+  }
+  
+  .contribution-item:hover {
+    transform: translateY(-2px);
+  }
+  
+  .empty-state img {
+    max-width: 200px;
+    opacity: 0.8;
+  }

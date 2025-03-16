@@ -1,107 +1,214 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import axios from "axios";
+import { Spinner, Button, Card } from "react-bootstrap";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
+import '../../assets/developer/css/UploadModal.css'
 const ProjectUpload = () => {
   const [token, setToken] = useState("");
   const [projectName, setProjectName] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
   const [files, setFiles] = useState([]);
+  const [filePreviews, setFilePreviews] = useState([]);
   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef(null);
 
-  const handleFileChange = (event) => {
-    const selectedFiles = Array.from(event.target.files);
-    setFiles(selectedFiles);
+  useEffect(() => {
+    const storedToken = localStorage.getItem("authToken");
+    if (storedToken) setToken(storedToken);
+  }, []);
+
+  const getFileType = (file) => {
+    const type = file.type?.split("/")[0] || "";
+    const extension = file.name.split(".").pop().toLowerCase();
+    return { type, extension };
   };
 
+  const readFileContent = async (file) => {
+    try {
+      if (file.type.startsWith("text/") || 
+          file.type === "application/javascript") {
+        const reader = new FileReader();
+        return new Promise((resolve, reject) => {
+          reader.onload = (e) => resolve(e.target.result);
+          reader.onerror = (e) => reject(e);
+          reader.readAsText(file);
+        });
+      }
+      return null;
+    } catch (error) {
+      console.error("Error reading file:", error);
+      return "Could not preview file content";
+    }
+  };
+
+  const handleFileChange = async (event) => {
+    const selectedFiles = Array.from(event.target.files);
+    setFiles(selectedFiles);
+
+    const previews = await Promise.all(
+      selectedFiles.map(async (file) => {
+        const { type, extension } = getFileType(file);
+        try {
+          let content = null;
+          
+          if (type === "image") {
+            content = URL.createObjectURL(file);
+          } else if (["html", "css", "js"].includes(extension)) {
+            content = await readFileContent(file);
+          }
+
+          return {
+            name: file.name,
+            type: type,
+            extension,
+            content,
+            size: file.size,
+            error: null
+          };
+        } catch (error) {
+          return {
+            name: file.name,
+            type: type,
+            extension,
+            content: null,
+            size: file.size,
+            error: "Failed to load preview"
+          };
+        }
+      })
+    );
+
+    setFilePreviews(previews);
+  };
+
+  const getFileIcon = (extension) => {
+    const icons = {
+      html:<i class='bi bi-filetype-html'></i>,
+      css:<i class='bi bi-filetype-css'></i>,
+      js:<i class='bi bi-filetype-js'></i>,
+      jpg:<i class='bi bi-filetype-jpg'></i>,
+      png:<i class='bi bi-filetype-png'></i>,
+      gif:<i class='bi bi-filetype-gif'></i>
+    };
+    return icons[extension] || "📁";
+  };
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
     if (!token || !projectName || !projectDescription || files.length === 0) {
-        alert("Please fill all fields and upload files.");
-        return;
+      alert("Please fill all fields and upload files.");
+      return;
     }
 
     setLoading(true);
-
     const formData = new FormData();
     formData.append("token", token);
-    formData.append("project_name", projectName);  // FIXED: Matching backend field
-    formData.append("project_description", projectDescription); // FIXED: Matching backend field
-
+    formData.append("project_name", projectName);
+    formData.append("project_description", projectDescription);
     files.forEach((file) => formData.append("files", file));
 
     try {
-        const response = await axios.post("http://127.0.0.1:8000/upload/", formData, {
-            headers: { "Content-Type": "multipart/form-data" },
-        });
+      const response = await axios.post("http://0.0.0.0:8001/upload/", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
-        alert("Project uploaded successfully!");
-        console.log("Response Data:", response.data);
-        
+      alert("Project uploaded successfully!");
+      setProjectName("");
+      setProjectDescription("");
+      setFiles([]);
+      setFilePreviews([]);
     } catch (error) {
-        console.error("Upload failed:", error.response?.data || error.message);
-        alert("Upload failed. Check console for details.");
+      console.error("Upload failed:", error.response?.data || error.message);
+      alert("Upload failed. Check console for details.");
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
-};
-
+  };
 
   return (
-    <div className="max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg">
-      <h2 className="text-2xl font-bold mb-4">Upload Project</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="text"
-          placeholder="Project Token"
-          value={token}
-          onChange={(e) => setToken(e.target.value)}
-          className="w-full p-2 border rounded"
-          required
-        />
+    <div className="upload-container">
+      <br />
+      <h2>Upload Project</h2>
+      <br />
+      <form onSubmit={handleSubmit} className="upload-form">
         <input
           type="text"
           placeholder="Project Name"
           value={projectName}
           onChange={(e) => setProjectName(e.target.value)}
-          className="w-full p-2 border rounded"
           required
         />
+        
         <textarea
           placeholder="Project Description"
           value={projectDescription}
           onChange={(e) => setProjectDescription(e.target.value)}
-          className="w-full p-2 border rounded"
           required
+          rows={7}
         />
+        
         <input
           type="file"
           multiple
-          accept=".html, .css, .js"
+          accept=".html,.css,.js,image/*"
           onChange={handleFileChange}
+          className="upload_file_input"
           ref={fileInputRef}
-          className="w-full p-2 border rounded"
           required
         />
 
-        {files.length > 0 && (
-          <ul className="mt-2">
-            {files.map((file, index) => (
-              <li key={index} className="text-sm text-gray-700">{file.name}</li>
-            ))}
-          </ul>
+        {filePreviews.length > 0 && (
+          <div className="file-previews">
+            <h4>Selected Files:</h4>
+            <div className="preview-grid">
+              {filePreviews.map((preview, index) => (
+                <Card key={index} className="file-card card">
+                  <Card.Body>
+                    <div className="file-header">
+                      <span className="file-icon">
+                        {getFileIcon(preview.extension)}
+                      </span>
+                      <span className="file-name">{preview.name}</span>
+                    </div>
+
+                    {preview.error && (
+                      <div className="preview-error">{preview.error}</div>
+                    )}
+
+                    {preview.type === "image" && preview.content && (
+                      <div className="code-preview">
+                      <img 
+                        src={preview.content} 
+                        alt="Preview" 
+                        className="image-preview"
+                      />
+                      </div>
+                    )}
+
+                    {["html", "css", "js"].includes(preview.extension) && (
+                      <div className="code-preview">
+                        <pre>
+                          {preview.content?.slice(0, 200) || "No content available"}
+                          {preview.content?.length > 200 && "..."}
+                        </pre>
+                      </div>
+                    )}
+
+                    <div className="file-meta">
+                      <span>{preview.extension.toUpperCase()}</span>
+                      <span>{(preview.size / 1024).toFixed(1)}KB</span>
+                    </div>
+                  </Card.Body>
+                </Card>
+              ))}
+            </div>
+          </div>
         )}
 
-        <button
-          type="submit"
-          className={`w-full text-white py-2 rounded transition ${
-            loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
-          }`}
-          disabled={loading}
-        >
-          {loading ? "Uploading..." : "Upload Project"}
-        </button>
+        <Button type="submit" disabled={loading}>
+          {loading ? <Spinner size="sm" /> : "Upload Project"}
+        </Button>
       </form>
     </div>
   );

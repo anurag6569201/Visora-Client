@@ -32,48 +32,94 @@ function MainSideBar() {
                 </div>
 
                 <div className="offcanvas-body d-md-flex flex-column flex-shrink-0 p-3 pt-lg-3 overflow-y-auto sidebar">
-                    <ul className="nav nav-pills flex-column mb-auto">
-                        <li className="nav-item">
-                            <a 
-                                onClick={() => navigate("/app/discover")} 
-                                className={`nav-link ${location.pathname === "/app/discover" ? "active" : ""}`}
-                            >
-                                <i className="bi bi-house-door me-2"></i> Discover
-                            </a>
-                        </li>
-                        <li>
-                            <a 
-                                onClick={() => navigate("/app/dashboard")} 
-                                className={`nav-link ${location.pathname === "/app/dashboard" ? "active" : "text-white"}`}
-                            >
-                                <i className="bi bi-speedometer2 me-2"></i> Dashboard
-                            </a>
-                        </li>
-                        <li>
-                            <a 
-                                onClick={() => navigate("/app/orders")} 
-                                className={`nav-link ${location.pathname === "/app/orders" ? "active" : "text-white"}`}
-                            >
-                                <i className="bi bi-table me-2"></i> Orders
-                            </a>
-                        </li>
-                        <li>
-                            <a 
-                                onClick={() => navigate("/app/products")} 
-                                className={`nav-link ${location.pathname === "/app/products" ? "active" : "text-white"}`}
-                            >
-                                <i className="bi bi-grid me-2"></i> Products
-                            </a>
-                        </li>
-                        <li>
-                            <a 
-                                onClick={() => navigate("/app/customers")} 
-                                className={`nav-link ${location.pathname === "/app/customers" ? "active" : "text-white"}`}
-                            >
-                                <i className="bi bi-people me-2"></i> Customers
-                            </a>
-                        </li>
-                    </ul>
+                    {user?.role === "Student" && (
+                        <ul className="nav nav-pills flex-column mb-auto">
+                            <li className="nav-item">
+                                <a 
+                                    onClick={() => navigate("/app/discover")} 
+                                    className={`nav-link ${location.pathname === "/app/discover" ? "active" : ""}`}
+                                >
+                                    <i className="bi bi-house-door me-2"></i> Discover
+                                </a>
+                            </li>
+                            <li>
+                                <a 
+                                    onClick={() => navigate("/app/visions")} 
+                                    className={`nav-link ${location.pathname === "/app/visions" ? "active" : "text-white"}`}
+                                >
+                                    <i className="bi bi-grid me-2"></i> Visions
+                                </a>
+                            </li>
+                            <li>
+                                <a 
+                                    onClick={() => navigate("/app/orders")} 
+                                    className={`nav-link ${location.pathname === "/app/orders" ? "active" : "text-white"}`}
+                                >
+                                    <i className="bi bi-table me-2"></i> Orders
+                                </a>
+                            </li>
+                            <li>
+                                <a 
+                                    onClick={() => navigate("/app/products")} 
+                                    className={`nav-link ${location.pathname === "/app/products" ? "active" : "text-white"}`}
+                                >
+                                    <i className="bi bi-grid me-2"></i> Products
+                                </a>
+                            </li>
+                            <li>
+                                <a 
+                                    onClick={() => navigate("/app/customers")} 
+                                    className={`nav-link ${location.pathname === "/app/customers" ? "active" : "text-white"}`}
+                                >
+                                    <i className="bi bi-people me-2"></i> Customers
+                                </a>
+                            </li>
+                        </ul>
+                    )}
+                    {user?.role === "Developer" && (
+                        <ul className="nav nav-pills flex-column mb-auto">
+                            <li className="nav-item">
+                                <a 
+                                    onClick={() => navigate("/app/discover")} 
+                                    className={`nav-link ${location.pathname === "/app/discover" ? "active" : ""}`}
+                                >
+                                    <i className="bi bi-house-door me-2"></i> Discover
+                                </a>
+                            </li>
+                            <li>
+                                <a 
+                                    onClick={() => navigate("/app/dev/deploy")} 
+                                    className={`nav-link ${location.pathname === "/app/dev/deploy" ? "active" : "text-white"}`}
+                                >
+                                    <i className="bi bi-cloud me-2"></i> Deploy
+                                </a>
+                            </li>
+                            <li>
+                                <a 
+                                    onClick={() => navigate("/app/dev/editor")} 
+                                    className={`nav-link ${location.pathname === "/app/dev/editor" ? "active" : "text-white"}`}
+                                >
+                                    <i className="bi bi-table me-2"></i> Visora Studio
+                                </a>
+                            </li>
+                            <li>
+                                <a 
+                                    onClick={() => navigate("/app/visions")} 
+                                    className={`nav-link ${location.pathname === "/app/visions" ? "active" : "text-white"}`}
+                                >
+                                    <i className="bi bi-grid me-2"></i> Visions
+                                </a>
+                            </li>
+                            <li>
+                                <a 
+                                    onClick={() => navigate("/app/customers")} 
+                                    className={`nav-link ${location.pathname === "/app/customers" ? "active" : "text-white"}`}
+                                >
+                                    <i className="bi bi-people me-2"></i> Customers
+                                </a>
+                            </li>
+                        </ul>
+                    )}
                     <hr />
                     <div className="dropdown">
                         <a
