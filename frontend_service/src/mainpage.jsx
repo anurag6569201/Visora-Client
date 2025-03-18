@@ -34,7 +34,7 @@ function MainPage() {
                     <main class="col-md-10 ms-sm-auto col-lg-10 px-md-3">
                         <TopBar/>
                         <Routes>
-                            <Route path="home/" element={<Home />} />
+                            <Route path="discover/" element={<Home />} />
                             <Route path="logout/" element={<GLogout />} />
 
 

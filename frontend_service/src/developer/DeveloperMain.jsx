@@ -76,7 +76,7 @@ const CodeEditor = () => {
             <Button 
             variant="outline-primary" 
             size="sm"
-            onClick={() => navigate("/app/dev/deploy")} 
+            onClick={() => navigate("/app/dev/deploy", { state: { status: true } })}
             className="d-flex align-items-center gap-2">
                   <FiCloud /> Deploy to Visora
             </Button>

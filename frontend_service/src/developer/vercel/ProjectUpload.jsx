@@ -1,10 +1,18 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import axios from "axios";
 import { Spinner, Button, Card } from "react-bootstrap";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 import '../../assets/developer/css/UploadModal.css'
+import LocalFilesDeploy from "./LocalFilesDeploy";
+import { useLocation } from "react-router-dom";
+import UserContext from "../../global/Context";
+
 const ProjectUpload = () => {
+  const location = useLocation();
+  const status = location.state?.status || false;
+  const { user } = useContext(UserContext);
+
   const [token, setToken] = useState("");
   const [projectName, setProjectName] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
@@ -84,13 +92,13 @@ const ProjectUpload = () => {
 
   const getFileIcon = (extension) => {
     const icons = {
-      html:<i class='bi bi-filetype-html'></i>,
-      css:<i class='bi bi-filetype-css'></i>,
-      js:<i class='bi bi-filetype-js'></i>,
-      jpg:<i class='bi bi-filetype-jpg'></i>,
-      png:<i class='bi bi-filetype-png'></i>,
-      gif:<i class='bi bi-filetype-gif'></i>
-    };
+      html: <i className="bi bi-filetype-html"></i>,
+      css: <i className="bi bi-filetype-css"></i>,
+      js: <i className="bi bi-filetype-js"></i>,
+      jpg: <i className="bi bi-filetype-jpg"></i>,
+      png: <i className="bi bi-filetype-png"></i>,
+      gif: <i className="bi bi-filetype-gif"></i>,
+    };    
     return icons[extension] || "📁";
   };
   
@@ -104,6 +112,8 @@ const ProjectUpload = () => {
     setLoading(true);
     const formData = new FormData();
     formData.append("token", token);
+    formData.append("username", user.username);
+    formData.append("email", user.email);
     formData.append("project_name", projectName);
     formData.append("project_description", projectDescription);
     files.forEach((file) => formData.append("files", file));
@@ -148,15 +158,20 @@ const ProjectUpload = () => {
           rows={7}
         />
         
-        <input
-          type="file"
-          multiple
-          accept=".html,.css,.js,image/*"
-          onChange={handleFileChange}
-          className="upload_file_input"
-          ref={fileInputRef}
-          required
-        />
+        {status ? (
+        <LocalFilesDeploy handleFileChange={handleFileChange} />
+        ) : (
+          <input
+            type="file"
+            multiple
+            accept=".html,.css,.js,image/*"
+            onChange={handleFileChange}
+            className="upload_file_input"
+            ref={fileInputRef}
+            required
+          />
+        )}
+
 
         {filePreviews.length > 0 && (
           <div className="file-previews">

@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Container, Table, Badge, Form, InputGroup, Button, Spinner, Alert } from "react-bootstrap";
 import axios from "axios";
 import { FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import UserContext from "../global/Context";
 
 export default function Visions() {
   const [requests, setRequests] = useState([]);
@@ -12,6 +13,7 @@ export default function Visions() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
@@ -70,7 +72,12 @@ export default function Visions() {
           <option value="in_progress">In Progress</option>
           <option value="completed">Completed</option>
         </Form.Select>
-        <Button variant="primary" onClick={() => navigate("/app/visions/request/")}>Request Vision</Button>
+        {user.role !== 'Developer' && (
+          <Button variant="primary" onClick={() => navigate("/app/visions/request/")}>
+            Request Vision
+          </Button>
+        )}
+
       </div>
 
       {loading ? <Spinner animation="border" /> : (

@@ -1,10 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import '../../../../assets/UserProfile/ProfilePost/ProfilePost.css'
 
+import ShowCase from "./ShowCase";
+
 function UserProfilePost() {
   const [activeTab, setActiveTab] = useState("showcase");
+  const [projects, setProjects] = useState([]);
 
+  useEffect(() => {
+    axios.get("http://0.0.0.0:8001/api/projects/")
+      .then(response => setProjects(response.data.projects));
+  }, []);
   return (
     <div className="profile-container py-2">
       <div className="profile-top-bar border">
@@ -18,7 +26,7 @@ function UserProfilePost() {
             <span className="stat-label text-light">Following</span>
           </div>
         </div>
-        
+
         <div className="profile-actions">
           <button className="btn btn-primary">Follow</button>
           <button className="btn btn-primary">
@@ -29,25 +37,25 @@ function UserProfilePost() {
 
       {/* Navigation Tabs */}
       <div className="profile-tabs">
-        <button 
+        <button
           className={`tab-item ${activeTab === 'showcase' ? 'active' : ''}`}
           onClick={() => setActiveTab('showcase')}
         >
           Showcase
         </button>
-        <button 
+        <button
           className={`tab-item ${activeTab === 'popular' ? 'active' : ''}`}
           onClick={() => setActiveTab('popular')}
         >
           Popular
         </button>
-        <button 
+        <button
           className={`tab-item ${activeTab === 'tags' ? 'active' : ''}`}
           onClick={() => setActiveTab('tags')}
         >
           Tags
         </button>
-        <button 
+        <button
           className={`tab-item ${activeTab === 'about' ? 'active' : ''}`}
           onClick={() => setActiveTab('about')}
         >
@@ -59,12 +67,13 @@ function UserProfilePost() {
       <div className="tab-content">
         {activeTab === 'showcase' && (
           <div className="showcase-grid">
-            {/* Add your showcase content here */}
-            <div className="showcase-item">Project 1</div>
-            <div className="showcase-item">Project 2</div>
-            <div className="showcase-item">Project 3</div>
+            {projects.map((project, index) => (
+              <ShowCase key={project.id || index} project={project} />
+            ))}
           </div>
         )}
+
+
 
         {activeTab === 'popular' && (
           <div className="popular-posts">
