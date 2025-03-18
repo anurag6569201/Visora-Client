@@ -21,6 +21,8 @@ import ProjectUpload from "./developer/vercel/ProjectUpload.jsx";
 
 import Visions from "./visions/Visions.jsx";
 import RequestDetails from "./visions/components/RequestDetails.jsx";
+import ShowCaseDetail from "./components/pages/profile/components/ShowCaseDetail.jsx";
+
 function MainPage() {
     return (
         <>
@@ -35,6 +37,7 @@ function MainPage() {
                         <TopBar/>
                         <Routes>
                             <Route path="discover/" element={<Home />} />
+                            <Route path="discover/:projectId" element={<ShowCaseDetail/>} />
                             <Route path="logout/" element={<GLogout />} />
 
 

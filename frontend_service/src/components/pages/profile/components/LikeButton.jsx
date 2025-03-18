@@ -1,28 +1,36 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import axios from "axios";
+import UserContext from "../../../../global/Context";
 
 const LikeButton = ({ projectId }) => {
+    const { user } = useContext(UserContext);
     const [liked, setLiked] = useState(false);
     const [likes, setLikes] = useState(0);
-    const token = localStorage.getItem('authToken');
     
-    if (!token) return null; // Avoids crashing when token is missing
 
     useEffect(() => {
-        async function fetchLikes() {
-            try {
-                const response = await axios.get(`http://0.0.0.0:8001/projects/${projectId}/like/`, {
-                    headers: { 'Authorization': token }
-                });
-                setLiked(response.data.is_liked);
-                setLikes(response.data.total_likes);
-            } catch (error) {
-                console.error("Error fetching like data", error);
+        console.log("Fetching likes for project:", projectId);
+        if (user) {
+            async function fetchLikes() {
+                try {
+                    console.log("API Call: GET /projects/", projectId, "/like/");
+                    const response = await axios.get(`http://0.0.0.0:8001/projects/${projectId}/like/`, {
+                        headers: { 'Authorization': user.username }
+                    });
+                    console.log("API Response:", response.data);
+                    setLiked(response.data.is_liked);
+                    setLikes(response.data.total_likes);
+                } catch (error) {
+                    console.error("Error fetching like data", error);
+                }
             }
+            fetchLikes();
+        } else {
+            console.warn("User is not available yet.");
         }
-        fetchLikes();
-    }, [projectId]);
+    }, [projectId, user]); // Ensure user is in the dependency array
+    
 
     const handleLike = async () => {
         try {
@@ -31,7 +39,7 @@ const LikeButton = ({ projectId }) => {
                 {},
                 {
                     headers: {
-                        'Authorization': token,
+                        'Authorization': user.username,
                         'Content-Type': 'application/json',
                     },
                 }

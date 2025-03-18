@@ -141,11 +141,11 @@ function GRegister() {
                                                 <div className="form-floating">
                                                     <select className="form-select" name="role" required
                                                         value={formData.role} onChange={handleChange}>
-                                                        <option value="student">Student</option>
-                                                        <option value="teacher">Teacher</option>
-                                                        <option value="developer">Developer</option>
-                                                        <option value="animator">Animator</option>
-                                                        <option value="researcher">Researcher</option>
+                                                        <option value="Student">Student</option>
+                                                        <option value="Teacher">Teacher</option>
+                                                        <option value="Developer">Developer</option>
+                                                        <option value="Animator">Animator</option>
+                                                        <option value="Researcher">Researcher</option>
                                                     </select>
                                                     <label>Role</label>
                                                 </div>
