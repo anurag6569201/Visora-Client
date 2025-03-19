@@ -63,7 +63,7 @@
 }
 
 .theory-card, .example-card {
-    background: #5d4f7a54;
+    background: #212529;
     padding: 10px;
     border-radius: 10px;
     margin-bottom: 10px;
@@ -168,7 +168,7 @@
     display: flex;
     align-items: flex-start;
     gap: 10px;
-    background: #3b3a4c;
+    background: #212529;
     padding: 10px;
     border-radius: 8px;
     margin-bottom: 8px;

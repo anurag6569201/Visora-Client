@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import "../../../../assets/discover/css/showcasedeatil.css";
 import LikeButton from "./LikeButton";
 import QuizSection from "./QuizSection";
+import Comments from "./CommentsSection";
+import UserContext from "../../../../global/Context";
+
 const ShowCaseDetail = () => {
     const { projectId } = useParams();
     const [project, setProject] = useState(null);
     const [loading, setLoading] = useState(true);
     const [combinedHTML, setCombinedHTML] = useState("");
-    const [comments, setComments] = useState([]);
-    const [newComment, setNewComment] = useState("");
-    const [showComments, setShowComments] = useState(true);
-    const [activeTab, setActiveTab] = useState('theory');
+    const [activeTab, setActiveTab] = useState('comments');
+    const { user } = useContext(UserContext);
+    const [commentsCount, setCommentsCount] = useState(0);
 
     // Dummy data
     const dummyData = {
@@ -34,35 +36,59 @@ const ShowCaseDetail = () => {
             { title: "Example 2", content: "Responsive layout techniques..." }
         ]
     };
-
     useEffect(() => {
-        // Simulated API call
-        setTimeout(() => {
-            setProject({
-                id: projectId,
-                name: "Sample Project",
-                description: "A fantastic web development showcase",
-                total_likes: 45,
-                files: []
-            });
-            setComments(dummyData.comments);
-            setLoading(false);
-        }, 1000);
+        const fetchProject = async () => {
+            try {
+                const response = await axios.get(`http://0.0.0.0:8001/api/projects/${projectId}/`);
+                setProject(response.data);
+                if (response.data?.files?.length) {
+                    await fetchFiles(response.data.files);
+                }
+            } catch (error) {
+                console.error("Error fetching project:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        const fetchFiles = async (files) => {
+            let htmlContent = "";
+            let cssContent = "";
+            let jsContent = "";
+
+            await Promise.all(files.map(async (file) => {
+                try {
+                    const fileResponse = await axios.get(`http://0.0.0.0:8001${file.file}`);
+                    if (file.file.endsWith(".html")) {
+                        htmlContent += fileResponse.data;
+                    } else if (file.file.endsWith(".css")) {
+                        cssContent += `<style>${fileResponse.data}</style>`;
+                    } else if (file.file.endsWith(".js")) {
+                        jsContent += `<script>${fileResponse.data}</script>`;
+                    }
+                } catch (err) {
+                    console.error(`Error loading file ${file.file}:`, err);
+                }
+            }));
+
+            setCombinedHTML(`<!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>${project?.name || "Preview"}</title>
+                    ${cssContent}
+                </head>
+                <body>
+                    ${htmlContent}
+                    ${jsContent}
+                </body>
+                </html>`);
+        };
+
+        fetchProject();
     }, [projectId]);
 
-    // Rest of your existing useEffect and file loading logic...
-
-    const handleCommentSubmit = () => {
-        if (newComment.trim() === "") return;
-        setComments([{ 
-            id: comments.length + 1, 
-            user: "You", 
-            text: newComment, 
-            likes: 0, 
-            timestamp: "Just now" 
-        }, ...comments]);
-        setNewComment("");
-    };
 
     if (loading) return <div className="loading">Loading...</div>;
     if (!project) return <div className="error">Project not found!</div>;
@@ -79,85 +105,74 @@ const ShowCaseDetail = () => {
             </div>
 
             <div className="content-wrapper">
-                <div className="sidebar">
-                    <div className="tabs">
-                        <button 
-                            className={activeTab === 'theory' ? 'active' : ''}
-                            onClick={() => setActiveTab('theory')}
-                        >
-                            Theory
-                        </button>
-                        <button 
-                            className={activeTab === 'examples' ? 'active' : ''}
-                            onClick={() => setActiveTab('examples')}
-                        >
-                            Examples
-                        </button>
-                    </div>
-
-                    {activeTab === 'theory' ? (
-                        <div className="theory-content">
-                            {dummyData.theory.map((section, index) => (
-                                <div key={index} className="theory-card">
-                                    <h4>{section.title}</h4>
-                                    <p>{section.content}</p>
-                                </div>
-                            ))}
-                        </div>
-                    ) : (
-                        <div className="examples-content">
-                            {dummyData.examples.map((example, index) => (
-                                <div key={index} className="example-card">
-                                    <h4>{example.title}</h4>
-                                    <p>{example.content}</p>
-                                    <button className="demo-btn">View Demo</button>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </div>
-
                 <div className="main-content">
                     <div className="project-info">
                         <h1>{project.name}</h1>
                         <p className="description">{project.description}</p>
                         <div className="stats">
                             <LikeButton projectId={project.id} />
-                            <button 
-                                className="comments-toggle"
-                                onClick={() => setShowComments(!showComments)}
-                            >
-                                {comments.length} Comments {showComments ? '▼' : '▶'}
-                            </button>
                         </div>
                     </div>
 
-                    {showComments && (
-                        <div className="comments-section">
-                            <div className="comment-input">
-                                <input
-                                    type="text"
-                                    placeholder="Add a comment..."
-                                    value={newComment}
-                                    onChange={(e) => setNewComment(e.target.value)}
-                                />
-                                <button onClick={handleCommentSubmit}>Comment</button>
-                            </div>
-                            {comments.map(comment => (
-                                <div key={comment.id} className="comment">
-                                    <div className="user-avatar">{comment.user[0]}</div>
-                                    <div className="comment-content">
-                                        <div className="comment-header">
-                                            <span className="username">{comment.user}</span>
-                                            <span className="timestamp">{comment.timestamp}</span>
-                                        </div>
-                                        <p className="comment_text">{comment.text}</p>
-                                    </div>
-                                </div>
-                            ))}
+                    <div className="tabs-container">
+                        <div className="tabs">
+                            <button 
+                                className={activeTab === 'comments' ? 'active' : ''}
+                                onClick={() => setActiveTab('comments')}
+                            >
+                                Comments ({commentsCount})
+                            </button>
+                            <button 
+                                className={activeTab === 'quiz' ? 'active' : ''}
+                                onClick={() => setActiveTab('quiz')}
+                            >
+                                Quiz
+                            </button>
+                            <button 
+                                className={activeTab === 'theory' ? 'active' : ''}
+                                onClick={() => setActiveTab('theory')}
+                            >
+                                Theory
+                            </button>
+                            <button 
+                                className={activeTab === 'examples' ? 'active' : ''}
+                                onClick={() => setActiveTab('examples')}
+                            >
+                                Examples
+                            </button>
                         </div>
-                    )}
-                    <QuizSection/>
+
+                        <div className="tab-content">
+                            {activeTab === 'comments' && (
+                                <Comments projectId={project.id} userToken={user.username} setCommentsCount={setCommentsCount}/>
+                            )}
+
+                            {activeTab === 'quiz' && <QuizSection />}
+
+                            {activeTab === 'theory' && (
+                                <div className="theory-content">
+                                    {dummyData.theory.map((section, index) => (
+                                        <div key={index} className="theory-card">
+                                            <h4>{section.title}</h4>
+                                            <p>{section.content}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            {activeTab === 'examples' && (
+                                <div className="examples-content">
+                                    {dummyData.examples.map((example, index) => (
+                                        <div key={index} className="example-card">
+                                            <h4>{example.title}</h4>
+                                            <p>{example.content}</p>
+                                            <button className="demo-btn">View Demo</button>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

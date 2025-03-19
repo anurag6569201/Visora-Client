@@ -1,29 +1,33 @@
 import React, { useState, useEffect } from "react";
 import "../../../../assets/discover/css/quiz.css";
 
-
 const QuizSection = () => {
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [selectedAnswers, setSelectedAnswers] = useState([]);
     const [quizSubmitted, setQuizSubmitted] = useState(false);
-    const [showExplanation, setShowExplanation] = useState(false);
+    const [quizData, setQuizData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    const dummyQuiz = {
-        questions: [
-            {
-                question: "What's the main purpose of this project?",
-                options: ["Learning React", "CSS Animation", "Web Development", "All of the above"],
-                correct: 3,
-                explanation: "This project combines multiple web development concepts including React, CSS animations, and modern web practices."
-            },
-            {
-                question: "Which technology is primarily used here?",
-                options: ["Angular", "React", "Vue", "Svelte"],
-                correct: 1,
-                explanation: "The project is built using React, as seen in the component structure and imports."
-            }
-        ]
-    };
+    useEffect(() => {
+        fetch('http://0.0.0.0:8001/api/quizzes/')
+            .then(response => response.json())
+            .then(data => {
+                if (data.length > 0 && data[0].data) {
+                    console.log("Fetched Quiz Data:", data[0].data); // Debug
+                    setQuizData(data[0].data); // Extract the nested 'data' field
+                    setLoading(false);
+                } else {
+                    throw new Error("No quiz data found");
+                }
+            })
+            .catch(err => {
+                console.error("Error fetching quiz:", err);
+                setError(err.message);
+                setLoading(false);
+            });
+    }, []);
+    
 
     const handleAnswerSelect = (optionIndex) => {
         if (!quizSubmitted) {
@@ -34,44 +38,47 @@ const QuizSection = () => {
     };
 
     const handleNextQuestion = () => {
-        if (currentQuestion < dummyQuiz.questions.length - 1) {
-            setCurrentQuestion(prev => prev + 1);
-            setShowExplanation(false);
+        if (currentQuestion < quizData?.questions.length - 1) {
+            setCurrentQuestion((prev) => prev + 1);
         }
     };
 
     const handlePreviousQuestion = () => {
         if (currentQuestion > 0) {
-            setCurrentQuestion(prev => prev - 1);
-            setShowExplanation(false);
+            setCurrentQuestion((prev) => prev - 1);
         }
     };
 
     const calculateScore = () => {
-        return dummyQuiz.questions.reduce((acc, question, index) => (
-            acc + (selectedAnswers[index] === question.correct ? 1 : 0)
-        ), 0);
+        return quizData?.questions.reduce(
+            (acc, question, index) =>
+                acc + (selectedAnswers[index] === question.correct - 1 ? 1 : 0),
+            0
+        );
     };
 
-    const currentQ = dummyQuiz.questions[currentQuestion];
+    if (loading) return <div>Loading quiz...</div>;
+    if (error) return <div>Error: {error}</div>;
+    if (!quizData) return <div>No quiz found</div>;
+
+    const currentQ = quizData.questions[currentQuestion];
     const isAnswered = selectedAnswers[currentQuestion] !== undefined;
-    const progress = ((currentQuestion + 1) / dummyQuiz.questions.length) * 100;
+    const progress = ((currentQuestion + 1) / quizData.questions.length) * 100;
 
     return (
         <div className="quiz-section">
             <div className="quiz-header">
-                <h3>Interactive Quiz</h3>
+                <h4>Interactive Quiz</h4>
                 <div className="progress-bar">
-                    <div 
-                        className="progress-fill"
-                        style={{ width: `${progress}%` }}
-                    ></div>
+                    <div className="progress-fill" style={{ width: `${progress}%` }}></div>
                 </div>
                 <div className="quiz-meta">
-                    <span>Question {currentQuestion + 1} of {dummyQuiz.questions.length}</span>
+                    <span>
+                        Question {currentQuestion + 1} of {quizData.questions.length}
+                    </span>
                     {quizSubmitted && (
                         <span className="score">
-                            Score: {calculateScore()}/{dummyQuiz.questions.length}
+                            Score: {calculateScore()}/{quizData.questions.length}
                         </span>
                     )}
                 </div>
@@ -80,43 +87,43 @@ const QuizSection = () => {
             {!quizSubmitted ? (
                 <>
                     <div className="question-card">
-                        <h4>{currentQ.question}</h4>
+                        <h5>{currentQ.text}</h5>
                         <div className="quiz-options">
                             {currentQ.options.map((option, index) => (
                                 <button
                                     key={index}
                                     className={`quiz-btn ${
-                                        selectedAnswers[currentQuestion] === index 
-                                            ? 'selected' 
-                                            : ''
+                                        selectedAnswers[currentQuestion] === index ? "selected" : ""
                                     }`}
                                     onClick={() => handleAnswerSelect(index)}
                                     disabled={quizSubmitted}
                                 >
-                                    {option}
+                                    {option.text}
                                     {quizSubmitted && (
-                                        <span className="answer-status">
-                                            {index === currentQ.correct 
-                                                ? '✓' 
-                                                : selectedAnswers[currentQuestion] === index 
-                                                    ? '✗' 
-                                                    : ''}
+                                        <span
+                                            className={`answer-status ${
+                                                selectedAnswers[currentQuestion] === index
+                                                    ? index === currentQ.correct - 1
+                                                        ? "correct"
+                                                        : "wrong"
+                                                    : ""
+                                            }`}
+                                        >
+                                            {index === currentQ.correct - 1 ? "✓" : selectedAnswers[currentQuestion] === index ? "✗" : ""}
                                         </span>
                                     )}
+
                                 </button>
                             ))}
                         </div>
                     </div>
 
                     <div className="quiz-navigation">
-                        <button
-                            onClick={handlePreviousQuestion}
-                            disabled={currentQuestion === 0}
-                        >
+                        <button onClick={handlePreviousQuestion} disabled={currentQuestion === 0}>
                             ← Previous
                         </button>
-                        
-                        {currentQuestion === dummyQuiz.questions.length - 1 ? (
+
+                        {currentQuestion === quizData.questions.length - 1 ? (
                             <button
                                 onClick={() => setQuizSubmitted(true)}
                                 disabled={!isAnswered}
@@ -125,54 +132,43 @@ const QuizSection = () => {
                                 Submit Quiz
                             </button>
                         ) : (
-                            <button
-                                onClick={handleNextQuestion}
-                                disabled={!isAnswered}
-                            >
+                            <button onClick={handleNextQuestion} disabled={!isAnswered}>
                                 Next →
                             </button>
                         )}
                     </div>
-
-                    {isAnswered && (
-                        <button
-                            className="explanation-toggle"
-                            onClick={() => setShowExplanation(!showExplanation)}
-                        >
-                            {showExplanation ? 'Hide' : 'Show'} Explanation
-                        </button>
-                    )}
-
-                    {showExplanation && (
-                        <div className="explanation">
-                            <h5>Explanation:</h5>
-                            <p>{currentQ.explanation}</p>
-                        </div>
-                    )}
+                    <br />
                 </>
             ) : (
                 <div className="quiz-results">
                     <h4>Quiz Results</h4>
                     <div className="score-circle">
-                        {calculateScore()}/{dummyQuiz.questions.length}
+                        {calculateScore()}/{quizData.questions.length}
                     </div>
-                    
-                    {dummyQuiz.questions.map((question, index) => (
+
+                    {quizData.questions.map((question, index) => (
                         <div key={index} className="result-item">
                             <div className="question-status">
-                                {selectedAnswers[index] === question.correct 
-                                    ? '✓' 
-                                    : '✗'}
+                                {selectedAnswers[index] === question.correct - 1 ? "✓" : "✗"}
                             </div>
                             <div>
-                                <p><strong>Question {index + 1}:</strong> {question.question}</p>
-                                <p>Your answer: {question.options[selectedAnswers[index]]}</p>
-                                <p>Correct answer: {question.options[question.correct]}</p>
+                                <p>
+                                    <strong>Question {index + 1}:</strong> {question.text}
+                                </p>
+                                <p>
+                                    Your answer:{" "}
+                                    {question.options[selectedAnswers[index]]?.text || "Not answered"}
+                                </p>
+                                <p>Correct answer: {question.options[question.correct - 1]?.text}</p>
+                                <div className="explanation">
+                                    <h5>Explanation:</h5>
+                                    <p>{question.explanation}</p>
+                                </div>
                             </div>
                         </div>
                     ))}
-                    
-                    <button 
+
+                    <button
                         className="retry-btn"
                         onClick={() => {
                             setCurrentQuestion(0);
@@ -180,13 +176,12 @@ const QuizSection = () => {
                             setQuizSubmitted(false);
                         }}
                     >
-                        Retry Quiz
+                        Generate More from AI
                     </button>
                 </div>
             )}
         </div>
     );
 };
-
 
 export default QuizSection;
