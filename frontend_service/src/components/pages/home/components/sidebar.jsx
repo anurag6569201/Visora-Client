@@ -68,10 +68,10 @@ function MainSideBar() {
                             </li>
                             <li>
                                 <a 
-                                    onClick={() => navigate("/app/customers")} 
-                                    className={`nav-link ${location.pathname === "/app/customers" ? "active" : "text-white"}`}
+                                    onClick={() => navigate("/app/leaderboard")} 
+                                    className={`nav-link ${location.pathname === "/app/leaderboard" ? "active" : "text-white"}`}
                                 >
-                                    <i className="bi bi-people me-2"></i> Customers
+                                    <i className="bi bi-people me-2"></i> Leaderboard
                                 </a>
                             </li>
                         </ul>
@@ -112,10 +112,10 @@ function MainSideBar() {
                             </li>
                             <li>
                                 <a 
-                                    onClick={() => navigate("/app/customers")} 
-                                    className={`nav-link ${location.pathname === "/app/customers" ? "active" : "text-white"}`}
+                                    onClick={() => navigate("/app/leaderboard")} 
+                                    className={`nav-link ${location.pathname === "/app/leaderboard" ? "active" : "text-white"}`}
                                 >
-                                    <i className="bi bi-people me-2"></i> Customers
+                                    <i className="bi bi-people me-2"></i> Leaderboard
                                 </a>
                             </li>
                         </ul>
@@ -149,7 +149,7 @@ function MainSideBar() {
                                 </a>
                             </li>
                             <li>
-                                <a className="dropdown-item"  onClick={() => navigate("/app/profile")}>
+                                <a className="dropdown-item"  onClick={() => navigate(`/app/profile?username=${user.username}&id=${user.id}`)}>
                                     Profile
                                 </a>
                             </li>

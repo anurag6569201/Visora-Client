@@ -14,7 +14,7 @@ function GRegister() {
         last_name: '',
         username: '',
         phone: '',
-        role: 'student',
+        role: '',
         password1: '',
         password2: '',
     });

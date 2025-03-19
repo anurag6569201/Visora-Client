@@ -22,7 +22,8 @@ import ProjectUpload from "./developer/vercel/ProjectUpload.jsx";
 import Visions from "./visions/Visions.jsx";
 import RequestDetails from "./visions/components/RequestDetails.jsx";
 import ShowCaseDetail from "./components/pages/profile/components/ShowCaseDetail.jsx";
-
+import Leaderboard from "./leaderboard/Leaderboard.jsx";
+import PublicProfile from "./components/pages/publicprofile/PublicProfile.jsx";
 function MainPage() {
     return (
         <>
@@ -41,7 +42,12 @@ function MainPage() {
                             <Route path="logout/" element={<GLogout />} />
 
 
+                            {/* developer routes */}
+                            <Route path="logout/" element={<GLogout />} />
+
                             <Route path="profile/" element={<UserProfile />} />
+                            
+                            <Route path="leaderboard/" element={<Leaderboard />} />
 
 
                             {/* developer routes */}

@@ -1,36 +1,80 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useContext } from "react";
 import axios from "axios";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import '../../../../assets/UserProfile/ProfilePost/ProfilePost.css'
 
 import ShowCase from "./ShowCase";
+import UserContext from "../../../../global/Context";
 
-function UserProfilePost() {
+const UserProfilePost = ({userData,userid}) => {
   const [activeTab, setActiveTab] = useState("showcase");
   const [projects, setProjects] = useState([]);
+  const [followers, setFollowers] = useState(0);
+  const [following, setFollowing] = useState(0);
+  const [isFollowing, setIsFollowing] = useState(false);
+  const { user } = useContext(UserContext);
+  const token = localStorage.getItem('authToken');
+  if (!token) {
+      return;
+  }
+
 
   useEffect(() => {
-    axios.get("http://0.0.0.0:8001/api/projects/")
-      .then(response => setProjects(response.data.projects));
+    axios
+      .get("http://0.0.0.0:8001/api/projects/", {
+        headers: {
+          Authorization: `${userData}`,  // 🔥 Fix: Added 'Token' prefix
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => setProjects(response.data.projects))
+      .catch((err) => console.error("Error fetching projects:", err));
+  
+    axios
+      .get(`http://127.0.0.1:8000/user/${userid}/stats/`, {
+        headers: { Authorization: `Token ${token}` }, // 🔥 Fix here too
+      })
+      .then((response) => {
+        setFollowers(response.data.followers);
+        setFollowing(response.data.following);
+        setIsFollowing(response.data.isFollowing);
+      })
+      .catch((err) => console.error("Error fetching user stats:", err));
   }, []);
+  
+  const handleFollowToggle = () => {
+    const url = isFollowing
+      ? `http://127.0.0.1:8000/unfollow/${userid}/`
+      : `http://127.0.0.1:8000/follow/${userid}/`;
+  
+    axios
+      .post(url, {}, { headers: { Authorization: `Token ${token}` } }) // 🔥 Fix here too
+      .then(() => {
+        setIsFollowing(!isFollowing);
+        setFollowers((prev) => (isFollowing ? prev - 1 : prev + 1));
+      })
+      .catch((err) => console.error("Error following/unfollowing:", err));
+  };
   return (
     <div className="profile-container py-2">
       <div className="profile-top-bar border">
         <div className="profile-stats">
           <div className="stat-item">
-            <span className="stat-number text-light">1.2k</span>
+            <span className="stat-number text-light">{followers}</span>
             <span className="stat-label text-light">Followers</span>
           </div>
           <div className="stat-item">
-            <span className="stat-number text-light">892</span>
+            <span className="stat-number text-light">{following}</span>
             <span className="stat-label text-light">Following</span>
           </div>
         </div>
 
         <div className="profile-actions">
-          <button className="btn btn-primary">Follow</button>
+          <button className={`btn ${isFollowing ? "btn-secondary" : "btn-primary"}`} onClick={handleFollowToggle}>
+            {isFollowing ? "Unfollow" : "Follow"}
+          </button>
           <button className="btn btn-primary">
-            <i class="bi bi-three-dots"></i>
+            <i className="bi bi-three-dots"></i>
           </button>
         </div>
       </div>

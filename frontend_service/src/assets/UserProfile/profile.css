@@ -1,0 +1,42 @@
+.form-outline{
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: baseline;
+    justify-content: space-between !important;
+    width: 100%;
+    padding: 0;
+}
+.list-group-item{
+    justify-content: left;
+    padding: 0;
+}
+.form-notch{
+    display: none;
+}
+.form-label{
+    width: 60%;
+}
+.edit-profile-btn{
+    background-color: #5923c8;
+}
+.edit-profile-btn:hover{
+    background-color: #441b96;
+}
+
+.edit-profile-btn.iactive{
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    top: 10px;
+    left: calc(50% + 30px);
+    border: 1px solid #441b96;
+    width: 35px;
+    height: 35px;
+}
+.edit-profile-btn .bi{
+    vertical-align: 0 !important;
+}
+.avatar-rounder-card{
+    position: relative;
+}
