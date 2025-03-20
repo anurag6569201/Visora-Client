@@ -1,20 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Table, Pagination, Spinner, Card, Row, Col, Badge, Form, Alert } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
-import { Link } from "react-router-dom";
-
+import '../assets/leaderboard/css/Leaderboard.css'
 const Leaderboard = () => {
     const [scores, setScores] = useState([]);
     const [topThree, setTopThree] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [loading, setLoading] = useState(false);
-    const [searchQuery, setSearchQuery] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
-    const navigate = useNavigate();
 
     const fetchData = async (page = 1) => {
         setLoading(true);
@@ -46,37 +41,6 @@ const Leaderboard = () => {
         setLoading(false);
     };
 
-    const handleSearch = async (e) => {
-        e.preventDefault();
-        setErrorMessage('');
-        if (!searchQuery.trim()) {
-            setErrorMessage('Please enter a username');
-            return;
-        }
-
-        try {
-            const token = localStorage.getItem('authToken');
-            const headers = {
-                Authorization: `Token ${token}`,
-                "Content-Type": "application/json"
-            };
-            const response = await axios.get(
-                `http://localhost:8000/api/users/?username=${searchQuery}`,
-                { headers }
-            );
-            
-            if (response.data.results.length > 0) {
-                const user = response.data.results[0];
-                navigate(`/profile/${user.username}`);
-            } else {
-                setErrorMessage('User not found');
-            }
-        } catch (error) {
-            console.error('Search error:', error);
-            setErrorMessage('Error searching for user');
-        }
-    };
-
     useEffect(() => {
         fetchData();
         const interval = setInterval(fetchData, 50000);
@@ -98,70 +62,62 @@ const Leaderboard = () => {
 
     const getRankLabel = (rank) => {
         const labels = {
-            1: '1st',
-            2: '2nd',
-            3: '3rd'
+            1: '#1',
+            2: '#2',
+            3: '#3'
         };
         return labels[rank] || `${rank}th`;
     };
+    
 
     return (
-        <div className="container mt-5">
-            <h2 className="text-center mb-4">Game Leaderboard</h2>
-            <div className="mb-5">
-                <Form onSubmit={handleSearch}>
-                    <Row className="justify-content-center">
-                        <Col md={6}>
-                            <div className="input-group">
-                                <Form.Control
-                                    type="text"
-                                    placeholder="Search for a user..."
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                />
-                                <button 
-                                    className="btn btn-primary" 
-                                    type="submit"
-                                    disabled={!searchQuery.trim()}
-                                >
-                                    Search
-                                </button>
-                            </div>
-                            {errorMessage && (
-                                <Alert variant="danger" className="mt-2 mb-0">
-                                    {errorMessage}
-                                </Alert>
-                            )}
-                        </Col>
-                    </Row>
-                </Form>
-            </div>
+        <div className="container mt-2">
+            <h2 className="text-center mb-4">Visora Leaderboard</h2>
             {/* Top 3 Performers */}
-            <Row className="mb-5 justify-content-center">
+            <Row className="mb-5 justify-content-center align-items-end">
                 {topThree.map((player, index) => (
-                    <Col key={player.id} md={4} className="mb-3">
-                        <Card 
-                            className={`h-100 shadow-lg border-${getRankColor(index + 1)}`}
-                            bg={index === 0 ? getRankColor(index + 1) : 'light'}
-                            text={index === 0 ? 'white' : 'dark'}
-                        >
-                            <Card.Body className="text-center">
-                                <Badge pill bg={getRankColor(index + 1)} className="mb-3">
-                                    {getRankLabel(index + 1)}
-                                </Badge>
-                                <Card.Title>{player.username}</Card.Title> {/* FIXED HERE */}
-                                <Card.Text>
-                                    <span className="display-6">{player.score}</span>
-                                    <br />
-                                    <small className="text-muted">
-                                        Last updated: {new Date(player.updated_at).toLocaleDateString()}
-                                    </small>
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
+                    <Col
+                    key={player.id}
+                    md={3}
+                    className={`d-flex ${index === 0 ? 'order-2' : index === 1 ? 'order-1' : 'order-3'}`}
+                    >
+                    <Card className={`w-100 ${index === 0 ? 'mb-0 elevated-card' : 'mb-4'}`}>
+                        <Card.Body className="text-center d-flex flex-column justify-content-center align-items-center leaderboard_body">
+                        <div className="image_space_leaderboard">
+                            <img
+                                src={player?.userpic ? `http://127.0.0.1:8000/media/${player.userpic}` : "default-avatar.png"}
+                                alt="avatar"
+                                className="rounded-circle avatar-rounder-card"
+                                style={{ width: '130px' }}
+                            />
+                            <div className="badge_and_trophy">
+                            <div className={`fs-1 text-${getRankColor(index + 1)}`}>
+                                <i className="bi-trophy-fill" />
+                            </div>
+                        </div>
+                        </div>
+
+                        <div>
+
+                            <div className="image_sapce_score">
+                            <Badge pill bg={getRankColor(index + 1)} className="fs-6">
+                                {getRankLabel(index + 1)}
+                            </Badge>
+                            <span className="fs-5 fw-bold leaderboard_score">{player.score}</span>
+                            </div>
+                            <Card.Title className="fs-5">{player.username}</Card.Title>
+                            
+                            <div className="text-muted m-0">
+                            <i className="bi-clock-history me-2" />
+                            {new Date(player.updated_at).toLocaleDateString()}
+                            </div>
+                        </div>
+                        </Card.Body>
+                    </Card>
                     </Col>
                 ))}
-            </Row>
+                </Row>
+
 
             {/* Main Leaderboard Table */}
             <Card className="shadow">
@@ -185,16 +141,21 @@ const Leaderboard = () => {
                                     {scores.map((entry, index) => {
                                         const globalRank = ((currentPage - 1) * 10) + index + 1;
                                         return (
-                                            <tr key={entry.id} 
+                                            <tr key={entry.id}
                                             onClick={() => window.location.href = `/app/profile?username=${entry.username}&id=${entry.userid}`} style={{ cursor: "pointer" }} >
-                                                <td>
-                                                    <Badge bg={getRankColor(globalRank)}>
+                                                <td style={{display:'flex',alignItems:'center',gap:'10px'}}><img
+                                                        src={entry?.userpic ? `http://127.0.0.1:8000/media/${entry.userpic}` : "default-avatar.png"}
+                                                        alt="avatar"
+                                                        className="rounded-circle avatar-rounder-card"
+                                                        style={{ width: '40px' }}
+                                                    />
+                                                    <Badge className='p-2' bg={getRankColor(globalRank)}>
                                                         {globalRank}
                                                     </Badge>
                                                 </td>
-                                                <td>{entry.username}</td>
-                                                <td>{entry.score}</td>
-                                                <td>{new Date(entry.updated_at).toLocaleString()}</td>
+                                                <td className="align-middle"><span>{entry.username}</span></td>
+                                                <td className="align-middle"><span>{entry.score}</span></td>
+                                                <td className="align-middle"><span>{new Date(entry.updated_at).toLocaleString()}</span></td>
                                             </tr>
                                         );
                                     })}
