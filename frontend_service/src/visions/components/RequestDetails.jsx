@@ -11,14 +11,19 @@ export default function RequestDetails() {
   const [contributions, setContributions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [showForm, setShowForm] = useState(false);
+  const [animationLink, setAnimationLink] = useState("");
+  const [description, setDescription] = useState("");
+  const [submitError, setSubmitError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const getDifficultyColor = (difficulty) => {
     switch (difficulty.toLowerCase()) {
       case "easy":
-        return "success"; 
+        return "success";
       case "medium":
-        return "warning"; 
+        return "warning";
       case "hard":
-        return "danger"; 
+        return "danger";
       default:
         return "secondary";
     }
@@ -28,11 +33,11 @@ export default function RequestDetails() {
       case "easy":
         return 33;
       case "medium":
-        return 66; 
+        return 66;
       case "hard":
         return 100;
       default:
-        return 0; 
+        return 0;
     }
   };
   useEffect(() => {
@@ -77,6 +82,38 @@ export default function RequestDetails() {
   if (error) return <Alert variant="danger" className="rounded-pill shadow text-center">{error}</Alert>;
   if (!request) return <Alert variant="warning" className="rounded-pill shadow text-center">⚠️ Request not found</Alert>;
 
+
+  const handleContributionSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitError("");
+    setIsSubmitting(true);
+    const token = localStorage.getItem("authToken");
+
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/contributions/",
+        {
+          animation_request: id,
+          animation_link: animationLink,
+          description: description,
+        },
+        {
+          headers: { Authorization: `Token ${token}` },
+        }
+      );
+
+      // Update contributions list and reset form
+      setContributions([response.data, ...contributions]);
+      setAnimationLink("");
+      setDescription("");
+      setShowForm(false);
+    } catch (err) {
+      setSubmitError(err.response?.data?.message || "Submission failed. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <Container className="">
       <Row className="g-4">
@@ -98,7 +135,7 @@ export default function RequestDetails() {
             </div>
 
             <div className="mb-0">
-              <p className="lead text-muted" style={{fontSize:'16px'}}>{request.description}</p>
+              <p className="lead text-muted" style={{ fontSize: '16px' }}>{request.description}</p>
             </div>
 
             <Row className="g-3 mb-3">
@@ -127,11 +164,11 @@ export default function RequestDetails() {
                       <div className="ms-3">
                         <h6 className="mb-0">Difficulty</h6>
                         <ProgressBar
-                            now={getDifficultyValue(request.difficulty)}
-                            label={request.difficulty}
-                            className="mt-1"
-                            style={{ width: "120px" }}
-                            variant={getDifficultyColor(request.difficulty)}
+                          now={getDifficultyValue(request.difficulty)}
+                          label={request.difficulty}
+                          className="mt-1"
+                          style={{ width: "120px",height:'100%' }}
+                          variant={getDifficultyColor(request.difficulty)}
                         />
                       </div>
                     </div>
@@ -146,24 +183,24 @@ export default function RequestDetails() {
                   <div className="icon-wrapper bg-info">
                     <BsPerson size={24} className="text-white" />
                   </div>
-                  <div className="ms-3" style={{width:'100%'}}>
-                    <div className="d-flex align-items-center" style={{width:'100%'}}>
-                        <div className="d-flex align-items-center">
-                            <img 
-                                src={request.created_by?.profile_picture || "/default-avatar.png"} 
-                                alt="avatar" 
-                                className="avatar-sm rounded-circle me-2"
-                            />
-                            <span className="fw-bold px-2">{request.created_by?.username || "Anonymous"}</span>
-                            <Badge pill bg="primary" className="d-flex align-items-center">
-                                <BsTags size={14} className="me-1" />{request.created_by?.role || "Visitor"}
-                            </Badge>
-                        </div>
-                        <h6 style={{textAlign:'right',width:'100%'}}>
-                            <Badge pill bg="success">
-                                <BsPerson size={14} className="me-1" />Created By
-                            </Badge>
-                        </h6>
+                  <div className="ms-3" style={{ width: '100%' }}>
+                    <div className="d-flex align-items-center" style={{ width: '100%' }}>
+                      <div className="d-flex align-items-center">
+                        <img
+                          src={request.created_by?.profile_picture || "/default-avatar.png"}
+                          alt="avatar"
+                          className="avatar-sm rounded-circle me-2"
+                        />
+                        <span className="fw-bold px-2">{request.created_by?.username || "Anonymous"}</span>
+                        <Badge pill bg="primary" className="d-flex align-items-center">
+                          <BsTags size={14} className="me-1" />{request.created_by?.role || "Visitor"}
+                        </Badge>
+                      </div>
+                      <h6 style={{ textAlign: 'right', width: '100%' }}>
+                        <Badge pill bg="success">
+                          <BsPerson size={14} className="me-1" />Created By
+                        </Badge>
+                      </h6>
                     </div>
                   </div>
                 </div>
@@ -186,17 +223,84 @@ export default function RequestDetails() {
         {/* Contributions Section */}
         <Col lg={4}>
           <Card className="glass-card border-0 p-4 px-0">
-            <h3 className="mb-4"><BsCash className="me-2" /> Contributions ({contributions.length})</h3>
-            
+            <div className="d-flex justify-content-between align-items-center mb-4">
+              <h3 className="mb-0"><BsCash className="me-2" /> Contributions ({contributions.length})</h3>
+              <Button
+                variant={showForm ? "outline-danger" : "primary"}
+                onClick={() => setShowForm(!showForm)}
+                size="sm"
+                className="rounded-pill"
+              >
+                {showForm ? "Cancel" : "+ New"}
+              </Button>
+            </div>
+
+            {showForm && (
+              <Card className="mb-4">
+                <Card.Body>
+                  <form onSubmit={handleContributionSubmit}>
+                    <div className="mb-3">
+                      <label htmlFor="animationLink" className="form-label small">
+                        Animation URL <span className="text-danger">*</span>
+                      </label>
+                      <input
+                        type="url"
+                        className="form-control form-control-sm"
+                        id="animationLink"
+                        value={animationLink}
+                        onChange={(e) => setAnimationLink(e.target.value)}
+                        required
+                        placeholder="https://example.com/animation"
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <label htmlFor="description" className="form-label small">
+                        Description <span className="text-danger">*</span>
+                      </label>
+                      <textarea
+                        className="form-control form-control-sm"
+                        id="description"
+                        rows="3"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        required
+                        placeholder="Describe your contribution..."
+                      />
+                    </div>
+                    <div className="d-grid gap-2">
+                      <Button
+                        type="submit"
+                        variant="success"
+                        disabled={isSubmitting}
+                        size="sm"
+                        className="rounded-pill"
+                      >
+                        {isSubmitting ? (
+                          <>
+                            <Spinner animation="border" size="sm" className="me-2" />
+                            Submitting...
+                          </>
+                        ) : "Submit Contribution"}
+                      </Button>
+                      {submitError && (
+                        <Alert variant="danger" className="text-center py-1 my-0">
+                          {submitError}
+                        </Alert>
+                      )}
+                    </div>
+                  </form>
+                </Card.Body>
+              </Card>
+            )}
             {contributions.length > 0 ? (
               <div className="contribution-list">
                 {contributions.map((contribution) => (
                   <Card key={contribution.id} className="mb-3 contribution-item">
                     <Card.Body>
                       <div className="d-flex align-items-start">
-                        <img 
-                          src={contribution.developer.profile_picture || "/default-avatar.png"} 
-                          alt="avatar" 
+                        <img
+                          src={contribution.developer.profile_picture || "/default-avatar.png"}
+                          alt="avatar"
                           className="avatar-xs rounded-circle me-2"
                         />
                         <div className="flex-grow-1">
@@ -206,17 +310,14 @@ export default function RequestDetails() {
                           </div>
                           <p className="mb-2 small">{contribution.description}</p>
                           <div className="d-flex justify-content-between align-items-center">
-                            <Button 
-                              variant="link" 
-                              href={contribution.animation_link} 
+                            <Button
+                              variant="link"
+                              href={contribution.animation_link}
                               target="_blank"
                               className="p-0 text-decoration-none"
                             >
                               <BsLink45Deg className="me-1" /> View Animation
                             </Button>
-                            <Badge pill bg="light" className="text-dark">
-                              <BsHandThumbsUp className="me-1" /> {contribution.likes}
-                            </Badge>
                           </div>
                         </div>
                       </div>
@@ -225,11 +326,14 @@ export default function RequestDetails() {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-4 empty-state">
-                <img src="/empty-contributions.svg" alt="No contributions" className="img-fluid mb-3" />
-                <p className="text-muted">Be the first to contribute!</p>
-                <Button variant="primary" className="rounded-pill px-4">Submit Contribution</Button>
-              </div>
+              <Card className="mb-3 contribution-item">
+                <Card.Body>
+                  <div className="text-center py-4 empty-state">
+                    <i class="bi bi-ban mb-3"></i>
+                    <p className="text-muted">No contributions yet</p>
+                  </div>
+                </Card.Body>
+              </Card>
             )}
           </Card>
         </Col>

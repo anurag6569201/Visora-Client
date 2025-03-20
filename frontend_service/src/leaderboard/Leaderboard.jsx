@@ -27,8 +27,8 @@ const Leaderboard = () => {
             };
     
             const [mainData, topPlayers] = await Promise.all([
-                axios.get(`http://localhost:8000/api/scores/?page=${page}`, { headers }),
-                axios.get('http://localhost:8000/api/scores/?ordering=-score&page_size=3', { headers })
+                axios.get(`http://localhost:8001/api/scores/?page=${page}`, { headers }),
+                axios.get('http://localhost:8001/api/scores/?ordering=-score&page_size=3', { headers })
             ]);
             
             setScores(mainData.data.results);
@@ -43,8 +43,6 @@ const Leaderboard = () => {
 
     useEffect(() => {
         fetchData();
-        const interval = setInterval(fetchData, 50000);
-        return () => clearInterval(interval);
     }, []);
 
     const handlePageChange = (page) => {
@@ -85,7 +83,7 @@ const Leaderboard = () => {
                         <Card.Body className="text-center d-flex flex-column justify-content-center align-items-center leaderboard_body">
                         <div className="image_space_leaderboard">
                             <img
-                                src={player?.userpic ? `http://127.0.0.1:8000/media/${player.userpic}` : "default-avatar.png"}
+                                src={player?.userpic ? `http://127.0.0.1:8000/${player.userpic}` : "default-avatar.png"}
                                 alt="avatar"
                                 className="rounded-circle avatar-rounder-card"
                                 style={{ width: '130px' }}
@@ -144,7 +142,7 @@ const Leaderboard = () => {
                                             <tr key={entry.id}
                                             onClick={() => window.location.href = `/app/profile?username=${entry.username}&id=${entry.userid}`} style={{ cursor: "pointer" }} >
                                                 <td style={{display:'flex',alignItems:'center',gap:'10px'}}><img
-                                                        src={entry?.userpic ? `http://127.0.0.1:8000/media/${entry.userpic}` : "default-avatar.png"}
+                                                        src={entry?.userpic ? `http://127.0.0.1:8000/${entry.userpic}` : "default-avatar.png"}
                                                         alt="avatar"
                                                         className="rounded-circle avatar-rounder-card"
                                                         style={{ width: '40px' }}

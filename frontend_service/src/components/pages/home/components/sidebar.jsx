@@ -37,7 +37,7 @@ function MainSideBar() {
                             <li className="nav-item">
                                 <a 
                                     onClick={() => navigate("/app/discover")} 
-                                    className={`nav-link ${location.pathname === "/app/discover" ? "active" : ""}`}
+                                    className={`nav-link ${location.pathname.includes("discover") ? "active" : "text-white"}`}
                                 >
                                     <i className="bi bi-house-door me-2"></i> Discover
                                 </a>
@@ -45,7 +45,7 @@ function MainSideBar() {
                             <li>
                                 <a 
                                     onClick={() => navigate("/app/visions")} 
-                                    className={`nav-link ${location.pathname === "/app/visions" ? "active" : "text-white"}`}
+                                    className={`nav-link ${location.pathname.includes("visions") ? "active" : "text-white"}`}
                                 >
                                     <i className="bi bi-grid me-2"></i> Visions
                                 </a>
@@ -53,7 +53,7 @@ function MainSideBar() {
                             <li>
                                 <a 
                                     onClick={() => navigate("/app/orders")} 
-                                    className={`nav-link ${location.pathname === "/app/orders" ? "active" : "text-white"}`}
+                                    className={`nav-link ${location.pathname.includes("orders") ? "active" : "text-white"}`}
                                 >
                                     <i className="bi bi-table me-2"></i> Orders
                                 </a>
@@ -61,7 +61,7 @@ function MainSideBar() {
                             <li>
                                 <a 
                                     onClick={() => navigate("/app/products")} 
-                                    className={`nav-link ${location.pathname === "/app/products" ? "active" : "text-white"}`}
+                                    className={`nav-link ${location.pathname.includes("products") ? "active" : "text-white"}`}
                                 >
                                     <i className="bi bi-grid me-2"></i> Products
                                 </a>
@@ -69,7 +69,7 @@ function MainSideBar() {
                             <li>
                                 <a 
                                     onClick={() => navigate("/app/leaderboard")} 
-                                    className={`nav-link ${location.pathname === "/app/leaderboard" ? "active" : "text-white"}`}
+                                    className={`nav-link ${location.pathname.includes("leaderboard") ? "active" : "text-white"}`}
                                 >
                                     <i className="bi bi-people me-2"></i> Leaderboard
                                 </a>
@@ -81,7 +81,7 @@ function MainSideBar() {
                             <li className="nav-item">
                                 <a 
                                     onClick={() => navigate("/app/discover")} 
-                                    className={`nav-link ${location.pathname === "/app/discover" ? "active" : ""}`}
+                                    className={`nav-link ${location.pathname.includes("discover") ? "active" : "text-white"}`}
                                 >
                                     <i className="bi bi-house-door me-2"></i> Discover
                                 </a>
@@ -89,7 +89,7 @@ function MainSideBar() {
                             <li>
                                 <a 
                                     onClick={() => navigate("/app/dev/deploy")} 
-                                    className={`nav-link ${location.pathname === "/app/dev/deploy" ? "active" : "text-white"}`}
+                                    className={`nav-link ${location.pathname.includes("/dev/deploy") ? "active" : "text-white"}`}
                                 >
                                     <i className="bi bi-cloud me-2"></i> Deploy
                                 </a>
@@ -97,7 +97,7 @@ function MainSideBar() {
                             <li>
                                 <a 
                                     onClick={() => navigate("/app/dev/editor")} 
-                                    className={`nav-link ${location.pathname === "/app/dev/editor" ? "active" : "text-white"}`}
+                                    className={`nav-link ${location.pathname.includes("/dev/editor") ? "active" : "text-white"}`}
                                 >
                                     <i className="bi bi-table me-2"></i> Visora Studio
                                 </a>
@@ -105,7 +105,7 @@ function MainSideBar() {
                             <li>
                                 <a 
                                     onClick={() => navigate("/app/visions")} 
-                                    className={`nav-link ${location.pathname === "/app/visions" ? "active" : "text-white"}`}
+                                    className={`nav-link ${location.pathname.includes("visions") ? "active" : "text-white"}`}
                                 >
                                     <i className="bi bi-grid me-2"></i> Visions
                                 </a>
@@ -113,7 +113,7 @@ function MainSideBar() {
                             <li>
                                 <a 
                                     onClick={() => navigate("/app/leaderboard")} 
-                                    className={`nav-link ${location.pathname === "/app/leaderboard" ? "active" : "text-white"}`}
+                                    className={`nav-link ${location.pathname.includes("leaderboard") ? "active" : "text-white"}`}
                                 >
                                     <i className="bi bi-people me-2"></i> Leaderboard
                                 </a>

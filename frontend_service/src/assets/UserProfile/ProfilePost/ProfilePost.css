@@ -114,3 +114,9 @@
     font-size: 0.9rem;
     color: #333;
 }
+.user_profile_visitng{
+    color: grey;
+}
+.user_profile_visitng:hover{
+    color: #e5e4e7;
+}

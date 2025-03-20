@@ -5,6 +5,7 @@ import '../../../../assets/UserProfile/ProfilePost/ProfilePost.css'
 
 import ShowCase from "./ShowCase";
 import UserContext from "../../../../global/Context";
+import { useSearchParams } from "react-router-dom";
 
 const UserProfilePost = ({userData,userid}) => {
   const [activeTab, setActiveTab] = useState("showcase");
@@ -12,7 +13,9 @@ const UserProfilePost = ({userData,userid}) => {
   const [followers, setFollowers] = useState(0);
   const [following, setFollowing] = useState(0);
   const [isFollowing, setIsFollowing] = useState(false);
-  const { user } = useContext(UserContext);
+  const { user: contextUser } = useContext(UserContext);
+  const [searchParams] = useSearchParams();
+  const username_route = searchParams.get("username");
   const token = localStorage.getItem('authToken');
   if (!token) {
       return;
@@ -48,13 +51,23 @@ const UserProfilePost = ({userData,userid}) => {
       : `http://127.0.0.1:8000/follow/${userid}/`;
   
     axios
-      .post(url, {}, { headers: { Authorization: `Token ${token}` } }) // 🔥 Fix here too
+      .post(url, {}, { headers: { Authorization: `Token ${token}` } })
       .then(() => {
-        setIsFollowing(!isFollowing);
-        setFollowers((prev) => (isFollowing ? prev - 1 : prev + 1));
+        // ✅ Instead of manually toggling, refetch stats
+        axios
+          .get(`http://127.0.0.1:8000/user/${userid}/stats/`, {
+            headers: { Authorization: `Token ${token}` },
+          })
+          .then((response) => {
+            setFollowers(response.data.followers);
+            setFollowing(response.data.following);
+            setIsFollowing(response.data.isFollowing);
+          })
+          .catch((err) => console.error("Error refetching stats:", err));
       })
       .catch((err) => console.error("Error following/unfollowing:", err));
   };
+  
   return (
     <div className="profile-container py-2">
       <div className="profile-top-bar border">
@@ -70,9 +83,11 @@ const UserProfilePost = ({userData,userid}) => {
         </div>
 
         <div className="profile-actions">
+        {contextUser?.username != username_route && (
           <button className={`btn ${isFollowing ? "btn-secondary" : "btn-primary"}`} onClick={handleFollowToggle}>
             {isFollowing ? "Unfollow" : "Follow"}
           </button>
+          )}
           <button className="btn btn-primary">
             <i className="bi bi-three-dots"></i>
           </button>
