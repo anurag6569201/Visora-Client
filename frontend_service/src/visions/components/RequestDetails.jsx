@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { Container, Row, Col, Card, Badge, Spinner, Alert, ListGroup, ProgressBar, Button } from "react-bootstrap";
 import axios from "axios";
 import "../../assets/developer/css/RequestDetails.css"; // Create this CSS file for custom styles
-import { BsClock, BsPerson, BsTags, BsCash, BsDiagram3, BsLink45Deg, BsHandThumbsUp } from "react-icons/bs";
+import { BsClock, BsPerson, BsTags, BsCash, BsDiagram3, BsLink45Deg, BsHandThumbsUp, BsFile, BsBook, BsShare, BsSend } from "react-icons/bs";
 
 export default function RequestDetails() {
   const { id } = useParams();
@@ -130,6 +130,9 @@ export default function RequestDetails() {
                   <Badge pill bg={request.status === "completed" ? "success" : "warning"} className="d-flex align-items-center">
                     {request.status === "completed" ? "🎉 Completed" : "🕒 In Progress"}
                   </Badge>
+                  <Badge pill bg={request.status === "completed" ? "secondary" : "info"} className="d-flex align-items-center">
+                  <BsCash size={14} className="me-1" /> Rs {request.budget}
+                  </Badge>
                 </div>
               </div>
             </div>
@@ -171,6 +174,32 @@ export default function RequestDetails() {
                           variant={getDifficultyColor(request.difficulty)}
                         />
                       </div>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col md={12}>
+                <Card className="h-100 stats-card">
+                  <Card.Body>
+                    <div style={{display:'flex',justifyContent:'space-between'}}>
+                      <div className="d-flex align-items-center">
+                        <div className="icon-wrapper bg-success">
+                          <BsBook size={24} className="text-white" />
+                        </div>
+                        <div className="ms-3">
+                          <h6 className="mb-0">Supporting Documents</h6>
+                          <h6>Budget : {request.budget} Rs</h6>
+                        </div>
+                      </div>
+                      {request.attachments ? (
+                          <a href={request.attachments} target="_blank" rel="noopener noreferrer" className="document_preview">
+                            <Badge pill bg="success" style={{display:'flex',gap:'10px',alignItems:'center',cursor:'pointer'}}>
+                              <span style={{fontSize:'16px'}}> View </span><BsSend size={16} />
+                            </Badge>
+                          </a>
+                        ) : (
+                          <span style={{color:'gray'}}>No Attachment</span>
+                        )}
                     </div>
                   </Card.Body>
                 </Card>
@@ -225,14 +254,16 @@ export default function RequestDetails() {
           <Card className="glass-card border-0 p-4 px-0">
             <div className="d-flex justify-content-between align-items-center mb-4">
               <h3 className="mb-0"><BsCash className="me-2" /> Contributions ({contributions.length})</h3>
-              <Button
-                variant={showForm ? "outline-danger" : "primary"}
-                onClick={() => setShowForm(!showForm)}
-                size="sm"
-                className="rounded-pill"
-              >
-                {showForm ? "Cancel" : "+ New"}
-              </Button>
+              {request.created_by?.role === "Developer" && (
+                <Button
+                  variant={showForm ? "outline-danger" : "primary"}
+                  onClick={() => setShowForm(!showForm)}
+                  size="sm"
+                  className="rounded-pill"
+                >
+                  {showForm ? "Cancel" : "+ New"}
+                </Button>
+              )}
             </div>
 
             {showForm && (

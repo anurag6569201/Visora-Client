@@ -43,5 +43,6 @@
 
 
   .progress-bar{
-    height:14px !important;
+    height:18px !important;
+    margin: 0 !important;
   }

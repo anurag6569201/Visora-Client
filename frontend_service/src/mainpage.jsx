@@ -23,7 +23,7 @@ import Visions from "./visions/Visions.jsx";
 import RequestDetails from "./visions/components/RequestDetails.jsx";
 import ShowCaseDetail from "./components/pages/profile/components/ShowCaseDetail.jsx";
 import Leaderboard from "./leaderboard/Leaderboard.jsx";
-import PublicProfile from "./components/pages/publicprofile/PublicProfile.jsx";
+import VisionRequest from "./visions/components/VisionRequest.jsx";
 function MainPage() {
     return (
         <>
@@ -57,6 +57,8 @@ function MainPage() {
 
                             {/* visions routes */}
                             <Route path="visions/" element={<Visions />} />
+                            <Route path="visions/request/" element={<VisionRequest/>} />
+
                             <Route path="visions/requests/:id" element={<RequestDetails />} />
                         </Routes>
                     </main>

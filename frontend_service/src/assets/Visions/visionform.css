@@ -1,0 +1,137 @@
+.animation-request-form {
+    max-width: 1200px;
+    padding-top: 20px;
+    border-radius: 8px;
+  }
+  
+  .animation-request-form h2 {
+    color: #f8f9fa;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+  }
+  
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #dee2e6;
+    font-weight: 500;
+  }
+  
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #1a1d20;
+    border: 1px solid #373b3e;
+    border-radius: 4px;
+    color: #f8f9fa;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+  
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    border-color: #4dabf7;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.25);
+  }
+  
+  .form-group textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+  
+  .tags-input {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background-color: #1a1d20;
+    border: 1px solid #373b3e;
+    border-radius: 4px;
+  }
+  
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    background-color: #1864ab;
+    color: #f8f9fa;
+    border-radius: 20px;
+    font-size: 0.875rem;
+  }
+  
+  .tag button {
+    margin-left: 0.5rem;
+    background: none;
+    border: none;
+    color: #f8f9fa;
+    cursor: pointer;
+    padding: 0 0.25rem;
+  }
+  
+  .tag button:hover {
+    color: #ff6b6b;
+  }
+  
+  .tags-input input {
+    flex-grow: 1;
+    min-width: 150px;
+    padding: 0.25rem;
+    background: none;
+    border: none;
+    color: #f8f9fa;
+  }
+  
+  .error-message {
+    color: #ff6b6b;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: block;
+  }
+  
+  .success-message {
+    color: #69db7c;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    background-color: rgba(105, 219, 124, 0.1);
+    border-radius: 4px;
+    text-align: center;
+  }
+  
+  button[type="submit"] {
+    width: 100%;
+    padding: 1rem;
+    background-color: #1864ab;
+    color: #f8f9fa;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button[type="submit"]:hover:not(:disabled) {
+    background-color: #1971c2;
+  }
+  
+  button[type="submit"]:disabled {
+    background-color: #2d3338;
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+  
+  .error {
+    border-color: #ff6b6b !important;
+  }
+  
+  .error:focus {
+    box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.25) !important;
+  }

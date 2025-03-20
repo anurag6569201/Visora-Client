@@ -86,6 +86,7 @@ export default function Visions() {
             <tr>
               <th>#</th>
               <th>Title</th>
+              <th>Budget</th>
               <th>Category</th>
               <th>Status</th>
               <th>Difficulty</th>
@@ -100,6 +101,7 @@ export default function Visions() {
                 <tr key={req.id} onClick={() => navigate(`/app/visions/requests/${req.id}`)} style={{ cursor: "pointer" }}>
                   <td>{index + 1}</td>
                   <td>{req.title}</td>
+                  <td>{req.budget} Rs</td>
                   <td><Badge bg="primary">{req.category}</Badge></td>
                   <td>
                     <Badge bg={req.status === "completed" ? "success" : req.status === "in_progress" ? "warning" : "secondary"}>
