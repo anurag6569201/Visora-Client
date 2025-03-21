@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../../../../assets/discover/css/quiz.css";
 
-const QuizSection = () => {
+const QuizSection = ({projectId}) => {
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [selectedAnswers, setSelectedAnswers] = useState([]);
     const [quizSubmitted, setQuizSubmitted] = useState(false);
@@ -10,7 +10,7 @@ const QuizSection = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetch('http://0.0.0.0:8001/api/quizzes/')
+        fetch(`http://0.0.0.0:8001/quizzes/${projectId}/`)
             .then(response => response.json())
             .then(data => {
                 if (data.length > 0 && data[0].data) {

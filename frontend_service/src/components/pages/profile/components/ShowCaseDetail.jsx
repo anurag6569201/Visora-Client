@@ -147,7 +147,7 @@ const ShowCaseDetail = () => {
                                 <Comments projectId={project.id} userToken={user.username} setCommentsCount={setCommentsCount}/>
                             )}
 
-                            {activeTab === 'quiz' && <QuizSection />}
+                            {activeTab === 'quiz' && <QuizSection projectId={project.id}/>}
 
                             {activeTab === 'theory' && (
                                 <div className="theory-content">

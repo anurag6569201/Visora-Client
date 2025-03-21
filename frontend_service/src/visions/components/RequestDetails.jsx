@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { Container, Row, Col, Card, Badge, Spinner, Alert, ListGroup, ProgressBar, Button } from "react-bootstrap";
 import axios from "axios";
-import "../../assets/developer/css/RequestDetails.css"; // Create this CSS file for custom styles
+import "../../assets/developer/css/RequestDetails.css";
+import UserContext from "../../global/Context";
 import { BsClock, BsPerson, BsTags, BsCash, BsDiagram3, BsLink45Deg, BsHandThumbsUp, BsFile, BsBook, BsShare, BsSend } from "react-icons/bs";
 
 export default function RequestDetails() {
@@ -16,6 +17,9 @@ export default function RequestDetails() {
   const [description, setDescription] = useState("");
   const [submitError, setSubmitError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { user } = useContext(UserContext);
+  const [approvalLoading, setApprovalLoading] = useState(false);
+
   const getDifficultyColor = (difficulty) => {
     switch (difficulty.toLowerCase()) {
       case "easy":
@@ -114,11 +118,36 @@ export default function RequestDetails() {
     }
   };
 
+  const handleApprove = async (contributionId) => {
+    const enteredUsername = prompt("Enter your username to confirm approval:");
+    if (enteredUsername !== user.username) {
+      alert("Username does not match. Approval denied.");
+      return;
+    }
+  
+    const token = localStorage.getItem("authToken");
+    try {
+      setApprovalLoading(true);
+      await axios.patch(`http://127.0.0.1:8000/contributions/${contributionId}/approve/`, {}, {
+        headers: { Authorization: `Token ${token}` },
+      });
+      alert("Contribution approved successfully!");
+      window.location.reload();
+    } catch (error) {
+      console.error("Error approving contribution:", error);
+      alert("Failed to approve contribution.");
+    } finally {
+      setApprovalLoading(false);
+    }
+  };
+
+  
+
   return (
     <Container className="">
       <Row className="g-4">
         {/* Main Request Section */}
-        <Col lg={8}>
+        <Col lg={7}>
           <Card className="glass-card border-0 p-4 px-0">
             <div className="d-flex align-items-center mb-4">
               <div className="flex-grow-1">
@@ -131,7 +160,7 @@ export default function RequestDetails() {
                     {request.status === "completed" ? "🎉 Completed" : "🕒 In Progress"}
                   </Badge>
                   <Badge pill bg={request.status === "completed" ? "secondary" : "info"} className="d-flex align-items-center">
-                  <BsCash size={14} className="me-1" /> Rs {request.budget}
+                    <BsCash size={14} className="me-1" /> Rs {request.budget}
                   </Badge>
                 </div>
               </div>
@@ -142,6 +171,15 @@ export default function RequestDetails() {
             </div>
 
             <Row className="g-3 mb-3">
+              <div className="tags-section mb-2">
+                <div className="d-flex flex-wrap gap-2">
+                  {request.tags.map((tag, index) => (
+                    <Badge key={index} pill bg="light" className="text-dark border px-3">
+                      #{tag}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
               <Col md={6}>
                 <Card className="h-100 stats-card">
                   <Card.Body>
@@ -170,7 +208,7 @@ export default function RequestDetails() {
                           now={getDifficultyValue(request.difficulty)}
                           label={request.difficulty}
                           className="mt-1"
-                          style={{ width: "120px",height:'100%' }}
+                          style={{ width: "120px", height: '100%' }}
                           variant={getDifficultyColor(request.difficulty)}
                         />
                       </div>
@@ -181,7 +219,7 @@ export default function RequestDetails() {
               <Col md={12}>
                 <Card className="h-100 stats-card">
                   <Card.Body>
-                    <div style={{display:'flex',justifyContent:'space-between'}}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                       <div className="d-flex align-items-center">
                         <div className="icon-wrapper bg-success">
                           <BsBook size={24} className="text-white" />
@@ -192,14 +230,14 @@ export default function RequestDetails() {
                         </div>
                       </div>
                       {request.attachments ? (
-                          <a href={request.attachments} target="_blank" rel="noopener noreferrer" className="document_preview">
-                            <Badge pill bg="success" style={{display:'flex',gap:'10px',alignItems:'center',cursor:'pointer'}}>
-                              <span style={{fontSize:'16px'}}> View </span><BsSend size={16} />
-                            </Badge>
-                          </a>
-                        ) : (
-                          <span style={{color:'gray'}}>No Attachment</span>
-                        )}
+                        <a href={request.attachments} target="_blank" rel="noopener noreferrer" className="document_preview">
+                          <Badge pill bg="success" style={{ display: 'flex', gap: '10px', alignItems: 'center', cursor: 'pointer' }}>
+                            <span style={{ fontSize: '16px' }}> View </span><BsSend size={16} />
+                          </Badge>
+                        </a>
+                      ) : (
+                        <span style={{ color: 'gray' }}>No Attachment</span>
+                      )}
                     </div>
                   </Card.Body>
                 </Card>
@@ -235,26 +273,15 @@ export default function RequestDetails() {
                 </div>
               </Card.Body>
             </Card>
-
-            <div className="tags-section mb-4">
-              <h5 className="mb-3"><BsTags className="me-2" /> Tags</h5>
-              <div className="d-flex flex-wrap gap-2">
-                {request.tags.map((tag, index) => (
-                  <Badge key={index} pill bg="light" className="text-dark border px-3">
-                    #{tag}
-                  </Badge>
-                ))}
-              </div>
-            </div>
           </Card>
         </Col>
 
         {/* Contributions Section */}
-        <Col lg={4}>
+        <Col lg={5}>
           <Card className="glass-card border-0 p-4 px-0">
             <div className="d-flex justify-content-between align-items-center mb-4">
               <h3 className="mb-0"><BsCash className="me-2" /> Contributions ({contributions.length})</h3>
-              {request.created_by?.role === "Developer" && (
+              {user?.role === "Developer" && (
                 <Button
                   variant={showForm ? "outline-danger" : "primary"}
                   onClick={() => setShowForm(!showForm)}
@@ -304,7 +331,7 @@ export default function RequestDetails() {
                         variant="success"
                         disabled={isSubmitting}
                         size="sm"
-                        className="rounded-pill"
+                        className="rounded-pill submit-btn-contribution"
                       >
                         {isSubmitting ? (
                           <>
@@ -324,38 +351,48 @@ export default function RequestDetails() {
               </Card>
             )}
             {contributions.length > 0 ? (
-              <div className="contribution-list">
-                {contributions.map((contribution) => (
-                  <Card key={contribution.id} className="mb-3 contribution-item">
-                    <Card.Body>
-                      <div className="d-flex align-items-start">
-                        <img
-                          src={contribution.developer.profile_picture || "/default-avatar.png"}
-                          alt="avatar"
-                          className="avatar-xs rounded-circle me-2"
-                        />
-                        <div className="flex-grow-1">
-                          <div className="d-flex justify-content-between">
-                            <h6 className="mb-1">{contribution.developer.username}</h6>
-                            <small className="text-muted">2d ago</small>
-                          </div>
-                          <p className="mb-2 small">{contribution.description}</p>
-                          <div className="d-flex justify-content-between align-items-center">
+              contributions.map((contribution) => (
+                <Card key={contribution.id} className="mb-3 contribution-item" style={{ background: contribution.approved ? "#198753" : "defaultColor" }}>
+                  <Card.Body>
+                    <div className="d-flex align-items-start">
+                      <img
+                        src={contribution.developer.profile_picture || "/default-avatar.png"}
+                        alt="avatar"
+                        className="avatar-xs rounded-circle me-2"
+                      />
+                      <div className="flex-grow-1">
+                        <div className="d-flex justify-content-between">
+                          <h6 className="mb-1">{contribution.developer.username}</h6>
+                          <small className="text-muted">
+                            {new Date(contribution.submitted_at).toLocaleString()}
+                          </small>
+                        </div>
+                        <p className="mb-2 small">{contribution.description}</p>
+                        <div className="d-flex justify-content-between align-items-center">
+                          <Button
+                            variant="link"
+                            href={contribution.animation_link}
+                            target="_blank"
+                            className="p-0 text-decoration-none"
+                          >
+                            <BsLink45Deg className="me-1" /> View Animation
+                          </Button>
+                          {!contribution.approved && request.created_by.username===user.username && (
                             <Button
-                              variant="link"
-                              href={contribution.animation_link}
-                              target="_blank"
-                              className="p-0 text-decoration-none"
+                              variant="success"
+                              size="sm"
+                              onClick={() => handleApprove(contribution.id)}
+                              disabled={approvalLoading}
                             >
-                              <BsLink45Deg className="me-1" /> View Animation
+                              {approvalLoading ? "Approving..." : "Approve"}
                             </Button>
-                          </div>
+                          )}
                         </div>
                       </div>
-                    </Card.Body>
-                  </Card>
-                ))}
-              </div>
+                    </div>
+                  </Card.Body>
+                </Card>
+              ))
             ) : (
               <Card className="mb-3 contribution-item">
                 <Card.Body>

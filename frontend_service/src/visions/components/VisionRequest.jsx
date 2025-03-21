@@ -174,7 +174,7 @@ const VisionRequest = () => {
 
   return (
     <div className="animation-request-form">
-      <h2>Create Animation Request</h2>
+      <h2 className='gradient-text'>Create Animation Request</h2>
       {successMessage && <div className="success-message">{successMessage}</div>}
       {errors.general && <div className="error-message">{errors.general}</div>}
 
@@ -314,12 +314,13 @@ const VisionRequest = () => {
 
         {/* Visibility */}
         <div className="form-group checkbox-group">
-          <label>
+          <label style={{display:'flex',alignItems:'center',gap:'10px'}}>
             <input
               type="checkbox"
               name="visibility"
               checked={formData.visibility}
               onChange={handleInputChange}
+              style={{width:'20px',height:'20px'}}
             />
             Public Visibility
           </label>
